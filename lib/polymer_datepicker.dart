@@ -64,6 +64,7 @@ class DatePicker extends PolymerElement {
   
   DatePicker.created() : super.created() {
    // selectedDate = new DateTime.now();
+    format = new DateFormat.yMd();
     if (!dateonly) {
       format.add_Hm();
     }
@@ -109,28 +110,40 @@ class DatePicker extends PolymerElement {
   }
   
   void selectedDateChanged(DateTime oldDate,DateTime newDate) {
+    _logger.fine("Date changed : ${selectedDate}");
+    String newText;
     if (selectedDate!=null) {
-      textDate = format.format(selectedDate);
+      newText = format.format(selectedDate);
     } else {
-      textDate = null;
+      newText = null;
     }
+
+    if (newText==textDate) {
+      return;
+    }
+    textDate = newText;
     _logger.fine("Selected Date is ${selectedDate}");
     dispatchEvent(new CustomEvent("selectdate"));
     
   }
   
   void textDateChanged(String old,String newTextDate) {
+    _logger.fine("Text changed : ${textDate}");
     try {
-      selectedDate=format.parse(newTextDate);
+      DateTime newDate = format.parse(textDate);
+      if (newDate == selectedDate) {
+        return;
+      }
+      selectedDate=newDate;
       if (pickerOpen) {
         currentDate=selectedDate;
-        _updateMonth();
       }
 
     } catch (e) {
+      _logger.fine("Invalid date :${textDate} : ${e}");
       selectedDate = null;
-      return;
     }
+    _logger.fine("Parsed date : ${selectedDate}");
     dispatchEvent(new CustomEvent("selectdate"));
   }
   
@@ -172,6 +185,13 @@ class DatePicker extends PolymerElement {
     _closePending = f = new Future.delayed(new Duration(milliseconds:100),() {if (_closePending == f) {pickerOpen=false;}});
 
   //  }
+  }
+
+  @override
+  void detached() {
+    super.detached();
+    pickerOpen=false;
+
   }
 
   Stream<CustomEvent> get onSelectDate => selectDateEvent.forTarget(this);
