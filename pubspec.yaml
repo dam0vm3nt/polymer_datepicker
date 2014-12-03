@@ -2,6 +2,7 @@ author: Drafintech
 description: The simple polymer datepicker you were missing
 version: 0.1.0
 name: datepicker
+homepage: http://www.drafintech.it
 dependencies:
   browser: any
   polymer: any
