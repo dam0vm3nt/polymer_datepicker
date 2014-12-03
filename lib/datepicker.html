@@ -1,0 +1,120 @@
+<link rel="import" href="../../packages/polymer/polymer.html">
+<link rel="import" href="../../packages/paper_elements/paper_input.html">
+<link rel="import" href="../../packages/paper_elements/paper_button.html">
+<link rel="import" href="../../packages/paper_elements/paper_shadow.html">
+<link rel="import" href="../../packages/core_elements/core_dropdown.html">
+<link rel="import" href="../../packages/core_elements/core_dropdown_overlay.html">
+<link rel="import" href="../../packages/core_elements/core_icon.html">
+<polymer-element name="date-picker">
+  
+  <template>
+  <style>
+      :host {
+        display:inline-block;
+        
+      }
+  
+      .day {
+      }
+      .dayOther {
+        
+        color:#e6e6e6;         
+      }
+      .daySelected {
+        background-color:yellow;
+        color:black;
+        font-weight:bold;
+      }
+
+      .dayToday {
+          outline: 3px solid darkred;
+          outline-offset: -2px;
+          z-index: 2;
+      }
+      
+      .weekCol {
+        
+      }
+      
+      .dayCell {
+        max-width:2em;
+        max-height:2em;
+        width:2em;
+        height:2em;
+        padding:0.2em;
+        border-left:1px solid #e6e6e6;
+        border-top:1px solid #e6e6e6;
+      }
+      
+      .monthCell {
+        border-right: 1px solid #e6e6e6;
+        border-bottom: 1px solid #e6e6e6;
+
+          font-size:x-small;
+          background-color: white;
+      }
+      
+      #header {
+        border-right: 1px solid #e6e6e6;
+        border-top: 1px solid #e6e6e6;
+        border-left: 1px solid #e6e6e6;
+      }
+      
+      .input_dateonly {
+        width: 6em;
+      }
+
+      .input_full {
+          width: 12em;
+      }
+      
+      #hours {
+        width: 3em;
+      }
+      
+      #minutes {
+        width: 3em;
+      }
+      
+      #picker {
+
+      }
+      
+    </style>
+    <div layout vertical relative>
+        <div layout horizontal>
+          <paper-input id="input" on-click="{{showPicker}}" value="{{textDate}}" label="{{label}}" class="{{ { 'input_dateonly' : dateonly, 'input_full' : !dateonly } }}" on-blur="{{inputLeft}}"></paper-input>
+        </div>
+
+        <core-dropdown-overlay id="picker" relatedTarget="{{$['picker']}}" autoFocusDisabled="true" autoCloseDisabled="true" opened="{{pickerOpen}}" on-core-overlay-open-completed="{{pickerOpened}}">
+
+          <div id="month" layout vertical class="monthCell">
+              <paper-shadow z="2"></paper-shadow>
+            <div layout horizontal id="header">
+              <paper-button on-click="{{prevMonth}}"><core-icon icon="arrow-back"></core-icon></paper-button>
+              <div flex vertical layout center>{{monthYear}}</div>
+              <paper-button on-click="{{nextMonth}}"><core-icon icon="arrow-forward"></core-icon></paper-button>
+            </div>
+            <div layout horizontal>
+              <div class="dayCell"><div class="weekCol"></div></div>
+              <template repeat="{{day in month[0].days}}">
+                <div class="dayCell"><div class="weekCol">{{day.weekDay}}</div></div>
+              </template>
+            </div>
+            <template repeat="{{week in month}}">
+              <div layout horizontal>
+                <div class="dayCell weekCol"></div>
+                <template repeat="{{day in week.days}}">
+                  <div class="{{ { 'dayCell' : true, 'daySelected' : day.selected, 'dayOther' : day.other, 'dayToday' : day.today  } }}" relative  on-click="{{selDate}}" data-time="{{day.date.millisecondsSinceEpoch}}">
+                   {{day.date.day}}
+                  </div>
+                </template>
+              </div>
+            </template>
+          </div>
+        </core-dropdown-overlay>
+    </div>
+
+  </template>
+  <script type="application/dart" src="datepicker.dart"></script>
+</polymer-element>
