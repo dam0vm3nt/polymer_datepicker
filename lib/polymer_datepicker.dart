@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:polymer/polymer.dart';
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
-
+import 'package:core_elements/core_overlay.dart';
+import "dart:js" as js;
 /**
  * A Polymer datepicker element.
  *
@@ -46,7 +47,11 @@ class Week extends Observable {
 class DatePicker extends PolymerElement {
 
   static const EventStreamProvider<CustomEvent> selectDateEvent = const EventStreamProvider<CustomEvent>('selectdate');
-  
+
+  @published String halign="left";
+
+  @published String valign="top";
+
   @published DateTime selectedDate;
   @observable DateTime currentDate;
 
@@ -84,7 +89,26 @@ class DatePicker extends PolymerElement {
     currentDateChanged(null,currentDate);
     
   }
-  
+
+  void doPos(Event e,var detail,Element el) {
+    CoreOverlay ov = $['pick'] as CoreOverlay;
+
+    // Ok : let's position the damn thing.
+    Rectangle r = ov.parent.getBoundingClientRect();
+    var left = r.left;
+    var top = r.top;
+
+    ov.style.position = "fixed";
+    ov.style.left="${left}px";
+    ov.style.top="${top}px";
+
+    // Inform the component of positioning style
+    ov.jsElement[r'dimensions'][r'position'] = new js.JsObject.jsify({
+        "h":"left",
+        "v":"top"
+    });
+  }
+
   void nextMonth() {
     _closePending=null;
     $['input'].focus();

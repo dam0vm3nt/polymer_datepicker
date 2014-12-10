@@ -3,7 +3,7 @@
 <link rel="import" href="../../packages/paper_elements/paper_button.html">
 <link rel="import" href="../../packages/paper_elements/paper_shadow.html">
 <link rel="import" href="../../packages/core_elements/core_dropdown.html">
-<link rel="import" href="../../packages/core_elements/core_dropdown_overlay.html">
+<link rel="import" href="../../packages/core_elements/core_overlay.html">
 <link rel="import" href="../../packages/core_elements/core_icon.html">
 <polymer-element name="date-picker">
   
@@ -37,11 +37,11 @@
       }
       
       .dayCell {
-        max-width:2em;
-        max-height:2em;
-        width:2em;
-        height:2em;
-        padding:0.2em;
+        max-width:20px;
+        max-height:20px;
+        width:20px;
+        height:20px;
+        padding:2px;
         border-left:1px solid #e6e6e6;
         border-top:1px solid #e6e6e6;
       }
@@ -68,15 +68,40 @@
           width: 12em;
       }
       
-      #hours {
-        width: 3em;
-      }
-      
-      #minutes {
-        width: 3em;
-      }
+
       
       #picker {
+          position: absolute;
+          z-index: 100;
+          overflow: visible;
+          width:176px;
+          height:auto;
+
+
+      }
+
+      .halign_left {
+        left:0;
+      }
+
+      .halign_right {
+        right:0;
+      }
+
+      .valign_top {
+          top:0;
+      }
+
+      .valign_bottom {
+          bottom:30px;
+      }
+
+
+      #pick {
+          position: static;
+      }
+
+      #month {
 
       }
       
@@ -85,34 +110,43 @@
         <div layout horizontal>
           <paper-input id="input" on-click="{{showPicker}}" value="{{textDate}}" label="{{label}}" class="{{ { 'input_dateonly' : dateonly, 'input_full' : !dateonly } }}" on-blur="{{inputLeft}}"></paper-input>
         </div>
+        <div style="position:relative">
+            <core-overlay id="pick" on-core-overlay-position="{{doPos}}"  autoFocusDisabled="true"  autoCloseDisabled="true" opened="{{pickerOpen}}" on-core-overlay-open-completed="{{pickerOpened}}">
+                <paper-shadow z="2">
 
-        <core-dropdown-overlay id="picker" relatedTarget="{{$['picker']}}" autoFocusDisabled="true" autoCloseDisabled="true" opened="{{pickerOpen}}" on-core-overlay-open-completed="{{pickerOpened}}">
+                <div id="month" layout vertical class="monthCell">
 
-          <div id="month" layout vertical class="monthCell">
-              <paper-shadow z="2"></paper-shadow>
-            <div layout horizontal id="header">
-              <paper-button on-click="{{prevMonth}}"><core-icon icon="arrow-back"></core-icon></paper-button>
-              <div flex vertical layout center>{{monthYear}}</div>
-              <paper-button on-click="{{nextMonth}}"><core-icon icon="arrow-forward"></core-icon></paper-button>
-            </div>
-            <div layout horizontal>
-              <div class="dayCell"><div class="weekCol"></div></div>
-              <template repeat="{{day in month[0].days}}">
-                <div class="dayCell"><div class="weekCol">{{day.weekDay}}</div></div>
-              </template>
-            </div>
-            <template repeat="{{week in month}}">
-              <div layout horizontal>
-                <div class="dayCell weekCol"></div>
-                <template repeat="{{day in week.days}}">
-                  <div class="{{ { 'dayCell' : true, 'daySelected' : day.selected, 'dayOther' : day.other, 'dayToday' : day.today  } }}" relative  on-click="{{selDate}}" data-time="{{day.date.millisecondsSinceEpoch}}">
-                   {{day.date.day}}
+                <div layout horizontal justified center id="header">
+                  <paper-button style="min-width:0px" on-click="{{prevMonth}}" ><core-icon icon="arrow-back" style="width:20px;height:20px"></core-icon></paper-button>
+                  <div >{{monthYear}}</div>
+                  <paper-button  style="min-width:0px"  on-click="{{nextMonth}}" ><core-icon icon="arrow-forward" style="width:20px;height:20px"></core-icon></paper-button>
+                </div>
+                <div layout horizontal>
+                    <!--
+                  <div class="dayCell"><div class="weekCol"></div></div>
+                  -->
+                  <template repeat="{{day in month[0].days}}">
+                    <div class="dayCell"><div class="weekCol">{{day.weekDay}}</div></div>
+                  </template>
+                </div>
+                <template repeat="{{week in month}}">
+                  <div layout horizontal>
+                      <!--
+                    <div class="dayCell weekCol"></div>
+                    -->
+                    <template repeat="{{day in week.days}}">
+                      <div class="{{ { 'dayCell' : true, 'daySelected' : day.selected, 'dayOther' : day.other, 'dayToday' : day.today  } }}" relative  on-click="{{selDate}}" data-time="{{day.date.millisecondsSinceEpoch}}">
+                       {{day.date.day}}
+                      </div>
+                    </template>
                   </div>
                 </template>
               </div>
-            </template>
-          </div>
-        </core-dropdown-overlay>
+
+                </paper-shadow>
+            </core-overlay>
+
+        </div>
     </div>
 
   </template>
