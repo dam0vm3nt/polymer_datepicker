@@ -1,13 +1,13 @@
 author: Drafintech <info@drafintech.it>
 description: The simple polymer datepicker you were missing
-version: 0.1.1
+version: 0.1.2
 name: polymer_datepicker
 homepage: http://www.drafintech.it
 dependencies:
-  browser: any
-  polymer: any
-  core_elements: any
-  paper_elements: any
-  intl: any
+    intl: ">=0.11.11 <0.12.0"
+    core_elements: ">=0.5.0 <0.6.0"
+    polymer: ">=0.15.2 <0.16.0"
+    browser: ">=0.10.0+2 <0.11.0"
+    paper_elements: ">=0.6.0+1 <0.7.0"
 transformers:
 - polymer

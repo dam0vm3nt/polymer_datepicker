@@ -5,11 +5,6 @@ import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
 import 'package:core_elements/core_overlay.dart';
 import "dart:js" as js;
-/**
- * A Polymer datepicker element.
- *
- * This element wraps a jQuery UI Datepicker.
- */
 
 class Day extends Observable {
   @observable DateTime date;
@@ -42,6 +37,15 @@ class Week extends Observable {
     days = new List.generate(7, (int i) => new Day(start.add(new Duration(days:i)),curMonth,selectedDate));
   }
 }
+
+/**
+ * A Polymer datepicker element.
+ *
+ * Use selectedDate to get and set date (use a date object for value).
+ * date format is hard coded for now using the only reasonable format i.e. D/M/Y H:M.
+ * beware to init locale data before using this comp
+ * 
+ */
 
 @CustomTag('date-picker')
 class DatePicker extends PolymerElement {
