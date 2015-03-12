@@ -146,7 +146,8 @@ class DatePicker extends PolymerElement {
       newText = null;
     }
 
-    if (newText==textDate) {
+    if (newText==textDate||_comingFromTextChange) {
+      _comingFromTextChange = false;
       return;
     }
     textDate = newText;
@@ -154,6 +155,8 @@ class DatePicker extends PolymerElement {
     dispatchEvent(new CustomEvent("selectdate"));
     
   }
+
+  bool _comingFromTextChange = false;
   
   void textDateChanged(String old,String newTextDate) {
     _logger.fine("Text changed : ${textDate}");
@@ -162,14 +165,16 @@ class DatePicker extends PolymerElement {
       if (newDate == selectedDate) {
         return;
       }
+      _comingFromTextChange = true;
       selectedDate=newDate;
+
       if (pickerOpen) {
         currentDate=selectedDate;
       }
 
     } catch (e) {
       _logger.fine("Invalid date :${textDate} : ${e}");
-      selectedDate = null;
+     // selectedDate = null;
     }
     _logger.fine("Parsed date : ${selectedDate}");
     dispatchEvent(new CustomEvent("selectdate"));
