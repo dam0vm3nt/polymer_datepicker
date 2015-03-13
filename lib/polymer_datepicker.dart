@@ -1,3 +1,6 @@
+@HtmlImport("polymer_datepicker.html")
+library polymer_datepicker;
+
 import 'dart:html';
 import 'dart:async';
 import 'package:polymer/polymer.dart';
