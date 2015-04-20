@@ -1,1 +1,3 @@
-Updated for latest polymer and paper things
+* Now using @HtmlImport
+* Updated for latest polymer and paper things
+
