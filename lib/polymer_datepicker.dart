@@ -10,6 +10,9 @@ import 'package:core_elements/core_overlay.dart';
 import "dart:js" as js;
 
 class Day extends Observable {
+
+
+
   @observable DateTime date;
   
   @observable bool selected;
@@ -58,6 +61,8 @@ class DatePicker extends PolymerElement {
   @published String halign="left";
 
   @published String valign="top";
+
+  @published bool disabled=false;
 
   @published DateTime selectedDate;
   @observable DateTime currentDate;
@@ -204,6 +209,9 @@ class DatePicker extends PolymerElement {
   }
   
   void showPicker() {
+    if (disabled) {
+      return;
+    }
     if (selectedDate!=null) {
       currentDate = selectedDate;
     }
