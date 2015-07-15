@@ -122,8 +122,8 @@ class DatePicker extends PolymerElement {
   }
 
   void nextMonth() {
-    _closePending=null;
-    $['input'].focus();
+    //_closePending=null;
+
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));  
     currentDate = currentDate.add(new Duration(days:32));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));  
@@ -132,13 +132,14 @@ class DatePicker extends PolymerElement {
   bool _clickedIn;
 
   void cancelClose() {
+
     _logger.fine("CANCEL CLOSE");
     _clickedIn = true;
   }
   
   void prevMonth() {
-    _closePending=null;
-    $['input'].focus();
+    //_closePending=null;
+    //$['input'].focus();
     currentDate = currentDate.subtract(new Duration(days:currentDate.day));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));     
   }
@@ -228,12 +229,13 @@ class DatePicker extends PolymerElement {
    // new Future.delayed(new Duration(milliseconds:1000),() {$['input'].focus();});
   }
 
-  Future _closePending;
+  //Future _closePending;
 
   void inputLeft() {
   //  if (_pickerOpenComplete) {
     if (_clickedIn) {
       _clickedIn=false;
+      $['input'].focus();
       return;
     }
     pickerOpen=false;
