@@ -8,10 +8,13 @@ import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
 import 'package:core_elements/core_overlay.dart';
 import "dart:js" as js;
+import "package:paper_elements/paper_input.dart";
+import "package:paper_elements/paper_button.dart";
+import "package:paper_elements/paper_shadow.dart";
+import "package:core_elements/core_icon.dart";
+
 
 class Day extends Observable {
-
-
 
   @observable DateTime date;
   
@@ -80,7 +83,6 @@ class DatePicker extends PolymerElement {
   @ComputedProperty("dateFormat.format(currentDate)") get monthYear => readValue(#monthYear);
   
   DatePicker.created() : super.created() {
-   // selectedDate = new DateTime.now();
     format = new DateFormat.yMd();
     if (!dateonly) {
       format.add_Hm();
@@ -92,8 +94,6 @@ class DatePicker extends PolymerElement {
   }
 
   @observable bool pickerOpen = false;
-
-  //bool _pickerOpenComplete = false;
 
   @override
   void attached() {
@@ -122,9 +122,7 @@ class DatePicker extends PolymerElement {
   }
 
   void nextMonth() {
-    //_closePending=null;
-
-    currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));  
+    currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));
     currentDate = currentDate.add(new Duration(days:32));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));  
   }
@@ -132,14 +130,10 @@ class DatePicker extends PolymerElement {
   bool _clickedIn;
 
   void cancelClose() {
-
-    _logger.fine("CANCEL CLOSE");
     _clickedIn = true;
   }
   
   void prevMonth() {
-    //_closePending=null;
-    //$['input'].focus();
     currentDate = currentDate.subtract(new Duration(days:currentDate.day));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));     
   }
@@ -212,8 +206,6 @@ class DatePicker extends PolymerElement {
   }
 
   void pickerOpened() {
-    //$['input'].focus();
-   // new Future.delayed(new Duration(milliseconds:100),() {$['input'].focus();_pickerOpenComplete=true;});
   }
   
   void showPicker() {
@@ -225,14 +217,10 @@ class DatePicker extends PolymerElement {
     }
     _updateMonth();
     pickerOpen=true;
-    //_pickerOpenComplete=false;
-   // new Future.delayed(new Duration(milliseconds:1000),() {$['input'].focus();});
   }
 
-  //Future _closePending;
 
   void inputLeft() {
-  //  if (_pickerOpenComplete) {
     if (_clickedIn) {
       _clickedIn=false;
       $['input'].focus();
@@ -240,18 +228,6 @@ class DatePicker extends PolymerElement {
     }
     pickerOpen=false;
     return;
-    /*
-    Future f;
-    _logger.fine("INPUT LEFT");
-    _closePending = f = new Future.delayed(new Duration(milliseconds:100),() {
-      _logger.fine("BOOM! ${f} - ${_closePending}");
-      if (_closePending == f) {
-        _logger.fine("CLOSING BECAUSE YES");
-        pickerOpen=false;
-      }
-    });
-*/
-  //  }
   }
 
   @override
