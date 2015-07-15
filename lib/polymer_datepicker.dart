@@ -128,6 +128,13 @@ class DatePicker extends PolymerElement {
     currentDate = currentDate.add(new Duration(days:32));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));  
   }
+
+  bool _clickedIn;
+
+  void cancelClose() {
+    _logger.fine("CANCEL CLOSE");
+    _clickedIn = true;
+  }
   
   void prevMonth() {
     _closePending=null;
@@ -225,9 +232,23 @@ class DatePicker extends PolymerElement {
 
   void inputLeft() {
   //  if (_pickerOpenComplete) {
+    if (_clickedIn) {
+      _clickedIn=false;
+      return;
+    }
+    pickerOpen=false;
+    return;
+    /*
     Future f;
-    _closePending = f = new Future.delayed(new Duration(milliseconds:100),() {if (_closePending == f) {pickerOpen=false;}});
-
+    _logger.fine("INPUT LEFT");
+    _closePending = f = new Future.delayed(new Duration(milliseconds:100),() {
+      _logger.fine("BOOM! ${f} - ${_closePending}");
+      if (_closePending == f) {
+        _logger.fine("CLOSING BECAUSE YES");
+        pickerOpen=false;
+      }
+    });
+*/
   //  }
   }
 

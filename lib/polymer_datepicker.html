@@ -111,7 +111,7 @@
           <paper-input disabled="{{disabled}}" id="input" on-click="{{showPicker}}" value="{{textDate}}" label="{{label}}" class="{{ { 'input_dateonly' : dateonly, 'input_full' : !dateonly } }}" on-blur="{{inputLeft}}"></paper-input>
         </div>
         <div style="position:relative">
-            <core-overlay id="pick" on-core-overlay-position="{{doPos}}"  autoFocusDisabled="true"  autoCloseDisabled="true" opened="{{pickerOpen}}" on-core-overlay-open-completed="{{pickerOpened}}">
+            <core-overlay id="pick" on-core-overlay-position="{{doPos}}"  autoFocusDisabled="true"  autoCloseDisabled="true" opened="{{pickerOpen}}" on-core-overlay-open-completed="{{pickerOpened}}" on-mousedown="{{cancelClose}}">
                 <paper-shadow z="2">
 
                 <div id="month" layout vertical class="monthCell">
