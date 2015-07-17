@@ -4,7 +4,7 @@
 
 Just import in your component
 
-    import "packages:polymer_datepicker/polymer_datepicker.dart"
+    import "package:polymer_datepicker/polymer_datepicker.dart"
 
 and use in your html :
 
