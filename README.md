@@ -14,6 +14,8 @@ and use in your html :
 
 ``myDate`` should be an observable ``DateTime`` property. 
 
+This component uses ``intl`` package for week days and month names therefore locale should be properly initialized before using it (see ``intl`` library for more info).
+
 
 ## Changes
 
