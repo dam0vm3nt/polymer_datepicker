@@ -127,7 +127,7 @@ class DatePicker extends PolymerElement {
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));  
   }
 
-  bool _clickedIn;
+  bool _clickedIn=false;
 
   void cancelClose() {
     _clickedIn = true;
