@@ -9,7 +9,7 @@ Just import in your component
 and use in your html :
 
 ```HTML
-    <date-picker selectedDate="{{myDate}}" onlydate="true" label="Choose a date" on-selectdate="{{dateSelected}}"></date-picker>
+<date-picker selectedDate="{{myDate}}" onlydate="true" label="Choose a date" on-selectdate="{{dateSelected}}"></date-picker>
 ```
 
 ``myDate`` should be an observable ``DateTime`` property. 
