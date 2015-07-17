@@ -1,6 +1,6 @@
 #  A Simple date picker
 
-# Usage
+## Usage
 
 Just import in your component
 
@@ -8,10 +8,14 @@ Just import in your component
 
 and use in your html :
 
+```HTML
     <date-picker selectedDate="{{myDate}}" onlydate="true" label="Choose a date" on-selectdate="{{dateSelected}}"></date-picker>
+```
 
 ``myDate`` should be an observable ``DateTime`` property. 
 
+
+## Changes
 
 * fixed closing on blur bug
 * Now using @HtmlImport
