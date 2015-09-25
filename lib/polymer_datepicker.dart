@@ -4,17 +4,25 @@ library polymer_datepicker;
 import 'dart:html';
 import 'dart:async';
 import 'package:polymer/polymer.dart';
+
+
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:observe/observe.dart";
+
+
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
-import 'package:core_elements/core_overlay.dart';
 import "dart:js" as js;
-import "package:paper_elements/paper_input.dart";
-import "package:paper_elements/paper_button.dart";
-import "package:paper_elements/paper_shadow.dart";
-import "package:core_elements/core_icon.dart";
+import "package:polymer_elements/paper_input.dart";
+import "package:polymer_elements/paper_button.dart";
+import "package:polymer_elements/paper_material.dart";
+import "package:polymer_elements/iron_icon.dart";
+import "package:polymer_elements/iron_overlay_behavior.dart";
+import "package:polymer_elements/paper_toggle_button.dart";
+import 'package:polymer_autonotify/polymer_autonotify.dart';
 
 
-class Day extends Observable {
+class Day extends Observable with JsProxy {
 
   @observable DateTime date;
   
@@ -39,12 +47,19 @@ class Day extends Observable {
   }
 }
 
-class Week extends Observable {
+class Week extends Observable with JsProxy {
   @observable List<Day> days;
   
   Week(DateTime start,int curMonth,DateTime selectedDate) {
     days = new List.generate(7, (int i) => new Day(start.add(new Duration(days:i)),curMonth,selectedDate));
   }
+}
+
+@PolymerRegister("date-picker-overlay")
+class DatePickerOverlay extends PolymerElement with IronOverlayBehavior {
+
+  DatePickerOverlay.created() : super.created() {}
+
 }
 
 /**
@@ -56,31 +71,45 @@ class Week extends Observable {
  * 
  */
 
-@CustomTag('date-picker')
-class DatePicker extends PolymerElement {
+const EventStreamProvider<CustomEvent> _selectDateEvent = const EventStreamProvider<CustomEvent>('select-date-changed');
 
-  static const EventStreamProvider<CustomEvent> selectDateEvent = const EventStreamProvider<CustomEvent>('selectdate');
+@PolymerRegister('date-picker')
+class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySupportMixin {
 
-  @published String halign="left";
 
-  @published String valign="top";
+  @observable @property String halign="left";
 
-  @published bool disabled=false;
+  @observable @property String valign="top";
 
-  @published DateTime selectedDate;
-  @observable DateTime currentDate;
+  @observable @property bool disabled=false;
 
-  @published String label;
+  @observable @Property(notify:true) DateTime selectedDate;
 
-  @published bool dateonly = false;
-  
-  @observable List<Week> month;
+  @observable @property DateTime currentDate;
+
+  @observable @property String label;
+
+  @observable @property bool dateonly = false;
+
+  @observable @property List<Week> month;
+
+  @observable @property Week firstWeek;
+
+  DateFormat format = new DateFormat.yMd();
+
+  @observable @property String textDate;
+
 
   Logger _logger = new Logger("DTPICK");
   
   DateFormat dateFormat = new DateFormat("MMMM yyyy");
-  
-  @ComputedProperty("dateFormat.format(currentDate)") get monthYear => readValue(#monthYear);
+
+  @Observe("currentDate")
+  void computeMothYear([_]) {
+    monthYear = currentDate!=null ?dateFormat.format(currentDate):"...";
+  }
+
+  @observable @property String monthYear;
   
   DatePicker.created() : super.created() {
     format = new DateFormat.yMd();
@@ -93,7 +122,18 @@ class DatePicker extends PolymerElement {
     }
   }
 
-  @observable bool pickerOpen = false;
+  @Observe("dateonly")
+  void changeDateFormat([_]) {
+    format = new DateFormat.yMd();
+    if (!dateonly) {
+      format.add_Hm();
+    }
+    if (selectedDate!=null) {
+      textDate = format.format(selectedDate);
+    }
+  }
+
+  @observable @property bool pickerOpen = false;
 
   @override
   void attached() {
@@ -102,8 +142,9 @@ class DatePicker extends PolymerElement {
     
   }
 
-  void doPos(Event e,var detail,Element el) {
-    CoreOverlay ov = $['pick'] as CoreOverlay;
+  @eventHandler
+  void doPos(Event e,var detail) {
+    DatePickerOverlay ov = $['pick'] as DatePickerOverlay;
 
     // Ok : let's position the damn thing.
     Rectangle r = ov.parent.getBoundingClientRect();
@@ -115,13 +156,15 @@ class DatePicker extends PolymerElement {
     ov.style.top="${top}px";
 
     // Inform the component of positioning style
+    /*
     ov.jsElement[r'dimensions'][r'position'] = new js.JsObject.jsify({
         "h":"left",
         "v":"top"
-    });
+    });*/
   }
 
-  void nextMonth() {
+  @eventHandler
+  void nextMonth([_,__]) {
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));
     currentDate = currentDate.add(new Duration(days:32));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));  
@@ -129,25 +172,30 @@ class DatePicker extends PolymerElement {
 
   bool _clickedIn=false;
 
-  void cancelClose() {
+  @eventHandler
+  void cancelClose([_,__]) {
     _clickedIn = true;
   }
-  
-  void prevMonth() {
+
+  @eventHandler
+  void prevMonth([_,__]) {
     currentDate = currentDate.subtract(new Duration(days:currentDate.day));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));     
   }
   
-  DateFormat format = new DateFormat.yMd();
-  
-  @published String textDate;
-  
-  void selDate(Event evt,var detail,Node nd) {
+
+  @eventHandler
+  void selDate(Event evt,var detail) {
     pickerOpen=false;
-    selectedDate = new DateTime.fromMillisecondsSinceEpoch(int.parse((nd as Element).attributes["data-time"]));
+
+
+    Element el = evt.path.firstWhere((Element e) => e.attributes.containsKey("data-time"));
+    String attr = el.attributes["data-time"];
+    selectedDate = new DateTime.fromMillisecondsSinceEpoch(int.parse(attr));
   }
-  
-  void selectedDateChanged(DateTime oldDate,DateTime newDate) {
+
+  @Observe("selectedDate")
+  void selectedDateChanged([_]) {
     _logger.fine("Date changed : ${selectedDate}");
     String newText;
     if (selectedDate!=null) {
@@ -163,12 +211,14 @@ class DatePicker extends PolymerElement {
     textDate = newText;
     _logger.fine("Selected Date is ${selectedDate}");
     dispatchEvent(new CustomEvent("selectdate"));
+    dispatchEvent(new CustomEvent("select-date-changed"));
     
   }
 
   bool _comingFromTextChange = false;
-  
-  void textDateChanged(String old,String newTextDate) {
+
+  @Observe("textDate")
+  void textDateChanged([_]) {
     _logger.fine("Text changed : ${textDate}");
     try {
       DateTime newDate = format.parse(textDate);
@@ -188,9 +238,11 @@ class DatePicker extends PolymerElement {
     }
     _logger.fine("Parsed date : ${selectedDate}");
     dispatchEvent(new CustomEvent("selectdate"));
+    dispatchEvent(new CustomEvent("select-date-changed"));
   }
-  
-  void currentDateChanged(DateTime oldDate,DateTime newDate ) {
+
+  @Observe("currentDate")
+  void currentDateChanged([_,__]) {
     _updateMonth();
   }
   
@@ -202,13 +254,16 @@ class DatePicker extends PolymerElement {
         first = first.subtract(new Duration(days:1));
       }
       month = new List.generate(6, (int w) => new Week(first.add(new Duration(days:7*w)),currentDate.month,selectedDate));
-      
+      firstWeek = month.first;
   }
+
+
 
   void pickerOpened() {
   }
-  
-  void showPicker() {
+
+  @eventHandler
+  void showPicker([_,__]) {
     if (disabled) {
       return;
     }
@@ -220,13 +275,18 @@ class DatePicker extends PolymerElement {
   }
 
 
-  void inputLeft() {
+  @eventHandler
+  void inputLeft([_,__]) {
     if (_clickedIn) {
       _clickedIn=false;
       $['input'].focus();
       return;
     }
     pickerOpen=false;
+
+    if (textDate==null||textDate.isEmpty) {
+      selectedDate=null;
+    }
     return;
   }
 
@@ -237,5 +297,29 @@ class DatePicker extends PolymerElement {
 
   }
 
-  Stream<CustomEvent> get onSelectDate => selectDateEvent.forTarget(this);
+  @eventHandler
+  String computeInputClass(bool dateonly) =>  dateonly? 'input_dateonly' : 'input_full';
+
+  @eventHandler
+  String computeDayClass(bool selected,bool other,bool today) {
+    StringBuffer sb = new StringBuffer("dayCell");
+    if (selected) {
+      sb.write(" daySelected");
+    }
+    if (other) {
+      sb.write(" dayOther");
+    }
+    if (today) {
+      sb.write(" dayToday");
+    }
+    return sb.toString();
+  }
+
+  @eventHandler
+  String computeMillisecondsSinceEpoch(Day day) => day.date.millisecondsSinceEpoch;
+
+  @eventHandler
+  String computeDay(Day day) => day.date.day;
+
+  Stream<CustomEvent> get onSelectDate => _selectDateEvent.forTarget(this);
 }

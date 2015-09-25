@@ -1,13 +1,34 @@
 author: Drafintech <info@drafintech.it>
 description: The simple polymer datepicker you were missing
-version: 0.1.5+4
+version: 0.2.0
 name: polymer_datepicker
 homepage: https://github.com/dam0vm3nt/polymer_datepicker
 dependencies:
     intl: '>=0.12.4 <0.13.0'
-    core_elements: '>=0.7.1+2 <0.8.0'
-    polymer: '>=0.16.3+3 <0.17.0'
+    polymer: '>=1.0.0'
+    web_components: '>=0.12.0'
+    observe: any
+    smoke: any
+    polymer_autonotify:
+     path: ../polymer_autonotify
 #    browser: any
-    paper_elements: '>=0.7.1+1 <0.8.0'
+    polymer_elements:
+     git:
+      ref: behaviors
+      url: https://github.com/dart-lang/polymer_elements.git
+
+dependency_overrides:
+  polymer:
+    git:
+      ref: behaviors
+      url: https://github.com/dart-lang/polymer-dart.git
+  polymer_autonotify:
+   path: ../polymer_autonotify
+  polymer_interop:
+    git:
+      ref: 0.2.0-dev
+      url: https://github.com/dart-lang/polymer_interop.git
+
 transformers:
-- polymer
+- polymer_autonotify
+- observe

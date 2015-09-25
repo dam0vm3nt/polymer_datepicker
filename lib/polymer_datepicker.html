@@ -1,6 +1,36 @@
-<polymer-element name="date-picker">
-  
-  <template>
+
+<dom-module id="date-picker-overlay">
+    <template>
+        <div>
+            <content></content>
+        </div>
+    </template>
+</dom-module>
+
+<dom-module id="date-picker">
+  <style>
+    /* TODO(polyup): For speed, consider reworking these styles with .classes
+                     and #ids rather than [attributes].
+    */
+    [layout] {
+      @apply(--layout);
+    }
+    [layout][vertical] {
+      @apply(--layout-vertical);
+    }
+    [relative] {
+      position: relative;
+    }
+    [layout][horizontal] {
+      @apply(--layout-horizontal);
+    }
+    [layout][center] {
+      @apply(--layout-center);
+    }
+    [layout][justified] {
+      @apply(--layout-justified);
+    }
+  </style>
   <style>
       :host {
         display:inline-block;
@@ -11,18 +41,21 @@
       }
       .dayOther {
         
-        color:#e6e6e6;         
+        color:#e6e6e6;
+          @apply(--polymer-datepicker-day-other);
       }
       .daySelected {
         background-color:yellow;
         color:black;
         font-weight:bold;
+          @apply(--polymer-datepicker-day-selected);
       }
 
       .dayToday {
           outline: 3px solid darkred;
           outline-offset: -2px;
           z-index: 2;
+          @apply(--polymer-datepicker-today);
       }
       
       .weekCol {
@@ -37,6 +70,7 @@
         padding:2px;
         border-left:1px solid #e6e6e6;
         border-top:1px solid #e6e6e6;
+        @apply(--polymer-datepicker-daycell);
       }
       
       .monthCell {
@@ -45,12 +79,14 @@
 
           font-size:x-small;
           background-color: white;
+          @apply(--polymer-datepicker-monthcell);
       }
       
       #header {
         border-right: 1px solid #e6e6e6;
         border-top: 1px solid #e6e6e6;
         border-left: 1px solid #e6e6e6;
+          @apply(--polymer-datepicker-header);
       }
       
       .input_dateonly {
@@ -99,51 +135,49 @@
       }
       
     </style>
-    <div layout vertical relative>
-        <div layout horizontal>
-          <paper-input disabled="{{disabled}}" id="input" on-click="{{showPicker}}" value="{{textDate}}" label="{{label}}" class="{{ { 'input_dateonly' : dateonly, 'input_full' : !dateonly } }}" on-blur="{{inputLeft}}"></paper-input>
+  <template>
+    <div layout="" vertical="" relative="">
+        <div layout="" horizontal="">
+          <paper-input disabled="[[disabled]]" id="input" on-click="showPicker" value="{{textDate}}" label="[[label]]" on-blur="inputLeft" class$="[[computeInputClass(dateonly)]]"></paper-input>
         </div>
         <div style="position:relative">
-            <core-overlay id="pick" on-core-overlay-position="{{doPos}}"  autoFocusDisabled="true"  autoCloseDisabled="true" opened="{{pickerOpen}}" on-core-overlay-open-completed="{{pickerOpened}}" on-mousedown="{{cancelClose}}">
-                <paper-shadow z="2">
+            <date-picker-overlay id="pick" style="position:absolute;left:0;top:0" autofocusdisabled="true" autoclosedisabled="true" opened="[[pickerOpen]]" on-iron-overlay-opened="doPos" on-mousedown="cancelClose">
+                <paper-material elevation="2">
 
-                <div id="month" layout vertical class="monthCell">
+                <div id="month" layout="" vertical="" class="monthCell">
 
-                <div layout horizontal justified center id="header">
-                  <paper-button style="min-width:0px" on-click="{{prevMonth}}" ><core-icon icon="arrow-back" style="width:20px;height:20px"></core-icon></paper-button>
-                  <div >{{monthYear}}</div>
-                  <paper-button  style="min-width:0px"  on-click="{{nextMonth}}" ><core-icon icon="arrow-forward" style="width:20px;height:20px"></core-icon></paper-button>
+                <div layout="" horizontal="" justified="" center="" id="header">
+                  <paper-button style="min-width:0px" on-click="prevMonth"><iron-icon icon="arrow-back" style="width:20px;height:20px"></iron-icon></paper-button>
+                  <div>[[monthYear]]</div>
+                  <paper-button style="min-width:0px" on-click="nextMonth"><iron-icon icon="arrow-forward" style="width:20px;height:20px"></iron-icon></paper-button>
                 </div>
-                <div layout horizontal>
+                <div layout="" horizontal="">
                     <!--
                   <div class="dayCell"><div class="weekCol"></div></div>
                   -->
-                  <template repeat="{{day in month[0].days}}">
+                  <template is="dom-repeat" items="[[firstWeek.days]]" as="day">
                     <div class="dayCell"><div class="weekCol">{{day.weekDay}}</div></div>
                   </template>
                 </div>
-                <template repeat="{{week in month}}">
-                  <div layout horizontal>
+                <template is="dom-repeat" items="[[month]]" as="week">
+                  <div layout="" horizontal="">
                       <!--
                     <div class="dayCell weekCol"></div>
                     -->
-                    <template repeat="{{day in week.days}}">
-                      <div class="{{ { 'dayCell' : true, 'daySelected' : day.selected, 'dayOther' : day.other, 'dayToday' : day.today  } }}" relative  on-click="{{selDate}}" data-time="{{day.date.millisecondsSinceEpoch}}">
-                       {{day.date.day}}
+                    <template is="dom-repeat" items="[[week.days]]" as="day">
+                      <div relative="" on-click="selDate" class$="[[computeDayClass(day.selected,day.other,day.today)]]" data-time$="[[computeMillisecondsSinceEpoch(day)]]">
+                       <span>[[computeDay(day)]]</span>
                       </div>
                     </template>
                   </div>
                 </template>
               </div>
 
-                </paper-shadow>
-            </core-overlay>
+                </paper-material>
+            </date-picker-overlay>
 
         </div>
     </div>
 
   </template>
-    <!--
-  <script type="application/dart" src="polymer_datepicker.dart"></script>
-  -->
-</polymer-element>
+</dom-module>
