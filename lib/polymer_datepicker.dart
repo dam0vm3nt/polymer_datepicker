@@ -74,7 +74,7 @@ class DatePickerOverlay extends PolymerElement with IronOverlayBehavior {
 const EventStreamProvider<CustomEvent> _selectDateEvent = const EventStreamProvider<CustomEvent>('select-date-changed');
 
 @PolymerRegister('date-picker')
-class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySupportMixin {
+class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySupportJsBehavior, PolymerAutoNotifySupportBehavior {
 
 
   @observable @property String halign="left";
