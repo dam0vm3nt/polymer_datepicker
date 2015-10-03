@@ -22,7 +22,7 @@ import "package:polymer_elements/paper_toggle_button.dart";
 import 'package:polymer_autonotify/polymer_autonotify.dart';
 
 
-class Day extends Observable with JsProxy {
+class Day extends Observable  {
 
   @observable DateTime date;
   
@@ -47,7 +47,7 @@ class Day extends Observable with JsProxy {
   }
 }
 
-class Week extends Observable with JsProxy {
+class Week extends Observable  {
   @observable List<Day> days;
   
   Week(DateTime start,int curMonth,DateTime selectedDate) {
@@ -142,7 +142,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
     
   }
 
-  @eventHandler
+  @reflectable
   void doPos(Event e,var detail) {
     DatePickerOverlay ov = $['pick'] as DatePickerOverlay;
 
@@ -163,7 +163,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
     });*/
   }
 
-  @eventHandler
+  @reflectable
   void nextMonth([_,__]) {
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));
     currentDate = currentDate.add(new Duration(days:32));
@@ -172,19 +172,19 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
 
   bool _clickedIn=false;
 
-  @eventHandler
+  @reflectable
   void cancelClose([_,__]) {
     _clickedIn = true;
   }
 
-  @eventHandler
+  @reflectable
   void prevMonth([_,__]) {
     currentDate = currentDate.subtract(new Duration(days:currentDate.day));
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));     
   }
   
 
-  @eventHandler
+  @reflectable
   void selDate(Event evt,var detail) {
     pickerOpen=false;
 
@@ -262,7 +262,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   void pickerOpened() {
   }
 
-  @eventHandler
+  @reflectable
   void showPicker([_,__]) {
     if (disabled) {
       return;
@@ -275,7 +275,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   }
 
 
-  @eventHandler
+  @reflectable
   void inputLeft([_,__]) {
     if (_clickedIn) {
       _clickedIn=false;
@@ -297,10 +297,10 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
 
   }
 
-  @eventHandler
+  @reflectable
   String computeInputClass(bool dateonly) =>  dateonly? 'input_dateonly' : 'input_full';
 
-  @eventHandler
+  @reflectable
   String computeDayClass(bool selected,bool other,bool today) {
     StringBuffer sb = new StringBuffer("dayCell");
     if (selected) {
@@ -315,10 +315,10 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
     return sb.toString();
   }
 
-  @eventHandler
+  @reflectable
   String computeMillisecondsSinceEpoch(Day day) => day.date.millisecondsSinceEpoch;
 
-  @eventHandler
+  @reflectable
   String computeDay(Day day) => day.date.day;
 
   Stream<CustomEvent> get onSelectDate => _selectDateEvent.forTarget(this);
