@@ -14,7 +14,7 @@ dependencies:
 #    browser: any
     polymer_elements:
      git:
-      ref: behaviors
+      ref: master
       url: https://github.com/dart-lang/polymer_elements.git
 
 dependency_overrides:
@@ -30,5 +30,5 @@ dependency_overrides:
       url: https://github.com/dart-lang/polymer_interop.git
 
 transformers:
-- polymer_autonotify
+#- polymer_autonotify
 - observe
