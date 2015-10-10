@@ -30,5 +30,5 @@ dependency_overrides:
       url: https://github.com/dart-lang/polymer_interop.git
 
 transformers:
-#- polymer_autonotify
+- polymer_autonotify
 - observe
