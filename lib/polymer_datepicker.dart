@@ -316,10 +316,10 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   }
 
   @reflectable
-  String computeMillisecondsSinceEpoch(Day day) => day.date.millisecondsSinceEpoch;
+  String computeMillisecondsSinceEpoch(Day day) => day.date.millisecondsSinceEpoch.toString();
 
   @reflectable
-  String computeDay(Day day) => day.date.day;
+  String computeDay(Day day) => day.date.day.toString();
 
   Stream<CustomEvent> get onSelectDate => _selectDateEvent.forTarget(this);
 }
