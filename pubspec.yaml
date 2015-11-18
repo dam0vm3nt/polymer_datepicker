@@ -8,7 +8,6 @@ dependencies:
     polymer: any
     web_components: '>=0.12.0'
     observe: any
-    smoke: any
     polymer_autonotify:
      path: ../polymer_autonotify
 #    browser: any
