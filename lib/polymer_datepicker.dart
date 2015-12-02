@@ -31,6 +31,9 @@ class Day extends Observable  {
   @observable bool today;
 
   @observable bool other;
+
+
+
   
   DateFormat fmt = new DateFormat("EEE");
   
@@ -75,7 +78,7 @@ const EventStreamProvider<CustomEvent> _selectDateEvent = const EventStreamProvi
 
 @PolymerRegister('date-picker')
 class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySupportJsBehavior, PolymerAutoNotifySupportBehavior {
-
+  @observable @property bool required=false;
 
   @observable @property String halign="left";
 
@@ -98,6 +101,12 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   DateFormat format = new DateFormat.yMd();
 
   @observable @property String textDate;
+
+  @Observe("required")
+  void updateRequired(_)
+  {
+    print("req date $required");
+  }
 
 
   Logger _logger = new Logger("DTPICK");

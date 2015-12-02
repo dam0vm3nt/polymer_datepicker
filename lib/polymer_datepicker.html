@@ -139,7 +139,7 @@
   <template>
     <div layout="" vertical="" relative="">
         <div layout="" horizontal="">
-          <paper-input disabled="[[disabled]]" id="input" on-click="showPicker" value="{{textDate}}" label="[[label]]" on-blur="inputLeft" class$="[[computeInputClass(dateonly)]]"></paper-input>
+          <paper-input disabled="[[disabled]]" id="input" on-click="showPicker" required="[[required]]" auto-validate="" value="{{textDate}}" label="[[label]]" on-blur="inputLeft" class$="[[computeInputClass(dateonly)]]"></paper-input>
         </div>
         <div style="position:relative">
             <date-picker-overlay id="pick" style="position:absolute;left:0;top:0" autofocusdisabled="true" autoclosedisabled="true" opened="[[pickerOpen]]" on-iron-overlay-opened="doPos" on-mousedown="cancelClose">
