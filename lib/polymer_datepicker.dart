@@ -197,7 +197,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   @reflectable
   void selDate(Event evt,var detail) {
     pickerOpen=false;
-    fire("change");
+    //fire("change");
 
     Element el = evt.path.firstWhere((Element e) => e.attributes.containsKey("data-time"));
     String attr = el.attributes["data-time"];
@@ -308,7 +308,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   }
 
   @reflectable
-  String computeInputClass(bool dateonly) =>  dateonly? 'input_dateonly' : 'input_full';
+  String computeInputClass(bool dateonly) =>  dateonly? 'input_dateonly to-validate' : 'input_full to-validate';
 
   @reflectable
   String computeDayClass(bool selected,bool other,bool today) {
