@@ -106,6 +106,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   void updateRequired(_)
   {
     print("req date $required");
+    ($["input"] as PaperInput).validate();
   }
 
 
