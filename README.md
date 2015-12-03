@@ -9,17 +9,11 @@ Just import in your component
 and use in your html :
 
 ```HTML
-<date-picker selectedDate="{{myDate}}" onlydate="true" label="Choose a date" on-selectdate="{{dateSelected}}"></date-picker>
+<date-picker selected-date="{{myDate}}" onlydate="true" label="Choose a date" on-selectdate="{{dateSelected}}"></date-picker>
 ```
 
-``myDate`` should be an observable ``DateTime`` property. 
+``myDate`` should be an observable ``DateTime`` property. Observable feature is supported using [polymer_autonotify](https://pub.dartlang.org/packages/polymer_autonotify). 
 
 This component uses ``intl`` package for week days and month names therefore locale should be properly initialized before using it (see ``intl`` library for more info).
 
-
-## Changes
-
-* fixed closing on blur bug
-* Now using @HtmlImport
-* Updated for latest polymer and paper things
 
