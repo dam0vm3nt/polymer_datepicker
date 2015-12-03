@@ -3,6 +3,8 @@ description: The simple polymer datepicker you were missing
 version: 0.3.0
 name: polymer_datepicker
 homepage: https://github.com/dam0vm3nt/polymer_datepicker
+environment:
+    sdk: ">=1.8.0 <2.0.0"
 dependencies:
  intl: '>=0.12.4 <0.13.0'
  polymer_elements: ">=1.0.0-rc.3"
