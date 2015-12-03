@@ -86,8 +86,11 @@ packages:
     source: hosted
     version: "0.9.3"
   observe:
-    description: observe
-    source: hosted
+    description:
+      ref: reflectable
+      resolved-ref: "4e73faa824cdca2d3a83d3c9e9acf5bc6cb0b9d1"
+      url: "https://github.com/dam0vm3nt/observe.git"
+    source: git
     version: "0.13.1+2"
   package_config:
     description: package_config
@@ -106,32 +109,21 @@ packages:
     source: hosted
     version: "0.1.0"
   polymer:
-    description:
-      ref: behaviors
-      resolved-ref: "46be7836f387a8a2868507baf61940e871519986"
-      url: "https://github.com/dart-lang/polymer-dart.git"
-    source: git
-    version: "0.17.0-dev"
+    description: polymer
+    source: hosted
+    version: "1.0.0-rc.9"
   polymer_autonotify:
-    description:
-      path: "../polymer_autonotify"
-      relative: true
-    source: path
-    version: "0.0.3-SNAPSHOT"
+    description: polymer_autonotify
+    source: hosted
+    version: "1.0.0-rc.8+1"
   polymer_elements:
-    description:
-      ref: behaviors
-      resolved-ref: "158f8c79baa457140bf472a185d3520361824668"
-      url: "https://github.com/dart-lang/polymer_elements.git"
-    source: git
-    version: "0.1.0"
+    description: polymer_elements
+    source: hosted
+    version: "1.0.0-rc.4"
   polymer_interop:
-    description:
-      ref: "0.2.0-dev"
-      resolved-ref: "6477d497b25cc4d13b255c2eb27053985667d3dc"
-      url: "https://github.com/dart-lang/polymer_interop.git"
-    source: git
-    version: "0.2.0"
+    description: polymer_interop
+    source: hosted
+    version: "1.0.0-rc.5"
   pool:
     description: pool
     source: hosted
@@ -143,7 +135,7 @@ packages:
   reflectable:
     description: reflectable
     source: hosted
-    version: "0.2.0"
+    version: "0.4.0"
   shelf:
     description: shelf
     source: hosted
@@ -156,10 +148,6 @@ packages:
     description: shelf_web_socket
     source: hosted
     version: "0.0.1+4"
-  smoke:
-    description: smoke
-    source: hosted
-    version: "0.3.5"
   source_map_stack_trace:
     description: source_map_stack_trace
     source: hosted

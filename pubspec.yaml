@@ -4,29 +4,15 @@ version: 0.2.0
 name: polymer_datepicker
 homepage: https://github.com/dam0vm3nt/polymer_datepicker
 dependencies:
-    intl: '>=0.12.4 <0.13.0'
-    polymer: any
-    web_components: '>=0.12.0'
-    observe: any
-    polymer_autonotify:
-     path: ../polymer_autonotify
-#    browser: any
-    polymer_elements:
-     git:
-      ref: master
-      url: https://github.com/dart-lang/polymer_elements.git
-
-dependency_overrides:
-  polymer:
-    git:
-      ref: behaviors
-      url: https://github.com/dart-lang/polymer-dart.git
-  polymer_autonotify:
-   path: ../polymer_autonotify
-  polymer_interop:
-    git:
-      ref: 0.2.0-dev
-      url: https://github.com/dart-lang/polymer_interop.git
+ intl: '>=0.12.4 <0.13.0'
+ polymer_elements: ">=1.0.0-rc.3"
+ web_components: '>=0.12.0'
+ reflectable: any
+ polymer_autonotify: "^1.0.0-rc.6+4"
+ observe:
+  git:
+   ref: reflectable
+   url: https://github.com/dam0vm3nt/observe.git
 
 transformers:
 - polymer_autonotify
