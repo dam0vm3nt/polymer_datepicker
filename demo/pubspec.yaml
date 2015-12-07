@@ -1,0 +1,30 @@
+name: demo_polymer_datepicker
+description: Demo project for polymer datepicker
+version: 0.0.1
+author: Vittorio Ballestra <vittorio.ballestra@drafintech.it>
+homepage: https://github.com/dam0vm3nt/polymer_autonotify
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+dependencies:
+ polymer_elements: "^1.0.0-rc.5"
+ web_components: '^0.12.0'
+ reflectable: ^0.4.0
+ polymer_autonotify: "^1.0.0-rc.6+4"
+ polymer_datepicker: ^0.3.0
+# polymer_autonotify: 
+#  path: ../
+ observe:
+  git:
+   ref: reflectable
+   url: https://github.com/dam0vm3nt/observe.git
+
+
+transformers:
+- web_components:
+    entry_points:
+    - web/index.html
+- polymer_autonotify
+- observe
+- reflectable:
+    entry_points:
+    - web/index.dart

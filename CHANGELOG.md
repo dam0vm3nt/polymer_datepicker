@@ -1,3 +1,8 @@
+## 0.3.0+2
+
+Added a small demo.
+Upgraded to `polymer_elements` 1.0.0-rc.5
+
 ## 0.3.0+1
 
 Updated readme.
