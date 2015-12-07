@@ -31,6 +31,9 @@ class Day extends Observable  {
   @observable bool today;
 
   @observable bool other;
+
+
+
   
   DateFormat fmt = new DateFormat("EEE");
   
@@ -75,7 +78,7 @@ const EventStreamProvider<CustomEvent> _selectDateEvent = const EventStreamProvi
 
 @PolymerRegister('date-picker')
 class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySupportJsBehavior, PolymerAutoNotifySupportBehavior {
-
+  @observable @property bool required=false;
 
   @observable @property String halign="left";
 
@@ -98,6 +101,13 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   DateFormat format = new DateFormat.yMd();
 
   @observable @property String textDate;
+
+  @Observe("required")
+  void updateRequired(_)
+  {
+    print("req date $required");
+    ($["input"] as PaperInput).validate();
+  }
 
 
   Logger _logger = new Logger("DTPICK");
@@ -187,7 +197,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   @reflectable
   void selDate(Event evt,var detail) {
     pickerOpen=false;
-
+    //fire("change");
 
     Element el = evt.path.firstWhere((Element e) => e.attributes.containsKey("data-time"));
     String attr = el.attributes["data-time"];
@@ -298,7 +308,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
   }
 
   @reflectable
-  String computeInputClass(bool dateonly) =>  dateonly? 'input_dateonly' : 'input_full';
+  String computeInputClass(bool dateonly) =>  dateonly? 'input_dateonly to-validate' : 'input_full to-validate';
 
   @reflectable
   String computeDayClass(bool selected,bool other,bool today) {
