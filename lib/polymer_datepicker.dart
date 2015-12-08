@@ -1,4 +1,5 @@
 @HtmlImport("polymer_datepicker.html")
+/// A simple date picker for dart and polymer
 library polymer_datepicker;
 
 import 'dart:html';
@@ -20,7 +21,6 @@ import "package:polymer_elements/iron_icon.dart";
 import "package:polymer_elements/iron_overlay_behavior.dart";
 import "package:polymer_elements/paper_toggle_button.dart";
 import 'package:polymer_autonotify/polymer_autonotify.dart';
-
 
 class Day extends Observable  {
 
@@ -77,21 +77,39 @@ class DatePickerOverlay extends PolymerElement with IronOverlayBehavior {
 const EventStreamProvider<CustomEvent> _selectDateEvent = const EventStreamProvider<CustomEvent>('select-date-changed');
 
 @PolymerRegister('date-picker')
+/// Date picker component for dart and polymer
+///
+/// Fires `select-date-changed` when selected date changes.
+///
+/// Example:
+///
+///     <date-picker 
+///         select-date="{{myDateTimeField}}"
+///         label="Select a date"
+///         date-format="yyyy-MM-dd"
+///         dateonly="true">
+///     </date-picker>
+///
 class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySupportJsBehavior, PolymerAutoNotifySupportBehavior {
+  /// A flag for field validation
   @observable @property bool required=false;
 
   @observable @property String halign="left";
 
   @observable @property String valign="top";
 
+  /// A flag to enable / disable this field
   @observable @property bool disabled=false;
 
+  /// Current selected date, bindable r/w, notify.
   @observable @Property(notify:true) DateTime selectedDate;
 
   @observable @property DateTime currentDate;
 
+  /// Label displayed in the field
   @observable @property String label;
 
+  /// A flag to select only date without time info (default: false)
   @observable @property bool dateonly = false;
 
   @observable @property List<Week> month;
@@ -100,6 +118,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
 
   DateFormat format = new DateFormat.yMd();
 
+  /// Text version of the date bindable, r/w
   @observable @property String textDate;
 
   @Observe("required")
@@ -132,6 +151,7 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
     }
   }
 
+  /// The date format (default: locale for `DateFormat.yMd`)
   @observable @property String dateFormat = new DateFormat.yMd().pattern;
 
   @Observe("dateonly,dateFormat")
