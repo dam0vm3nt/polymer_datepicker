@@ -112,11 +112,11 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
 
   Logger _logger = new Logger("DTPICK");
   
-  DateFormat dateFormat = new DateFormat("MMMM yyyy");
+  DateFormat monthDateFormat = new DateFormat("MMMM yyyy");
 
   @Observe("currentDate")
   void computeMothYear([_]) {
-    monthYear = currentDate!=null ?dateFormat.format(currentDate):"...";
+    monthYear = currentDate!=null ?monthDateFormat.format(currentDate):"...";
   }
 
   @observable @property String monthYear;
@@ -132,9 +132,11 @@ class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySuppor
     }
   }
 
-  @Observe("dateonly")
-  void changeDateFormat([_]) {
-    format = new DateFormat.yMd();
+  @observable @property String dateFormat = new DateFormat.yMd().pattern;
+
+  @Observe("dateonly,dateFormat")
+  void changeDateFormat([_,__]) {
+    format = new DateFormat(dateFormat);
     if (!dateonly) {
       format.add_Hm();
     }

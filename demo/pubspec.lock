@@ -32,7 +32,7 @@ packages:
   code_transformers:
     description: code_transformers
     source: hosted
-    version: "0.2.9+4"
+    version: "0.2.10"
   collection:
     description: collection
     source: hosted
@@ -52,7 +52,7 @@ packages:
   dart_style:
     description: dart_style
     source: hosted
-    version: "0.2.0"
+    version: "0.2.1"
   glob:
     description: glob
     source: hosted
@@ -119,11 +119,13 @@ packages:
   polymer_autonotify:
     description: polymer_autonotify
     source: hosted
-    version: "1.0.0-rc.8+1"
+    version: "1.0.0-rc.9"
   polymer_datepicker:
-    description: polymer_datepicker
-    source: hosted
-    version: "0.3.0+1"
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.3.1"
   polymer_elements:
     description: polymer_elements
     source: hosted

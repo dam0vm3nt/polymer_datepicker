@@ -1,7 +1,8 @@
 <dom-module id="test-polymer-datepicker">
  <template>
 	<h1> hello </h1>
-	<date-picker selected-date="{{myDate}}"></date-picker>
+	<date-picker label="as locale" selected-date="{{myDate}}"></date-picker>
+	<date-picker label="fixed format" date-format="yyyy-MM-dd" selected-date="{{myDate}}"></date-picker>
 	<div>[[myDate]]</div>
  </template>
 </dom-module>
