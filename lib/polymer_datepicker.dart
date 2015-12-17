@@ -198,6 +198,11 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
   }
 
   @reflectable
+  void doClose(Event e, var detail) {
+	  pickerOpen = false;
+  }
+
+  @reflectable
   void nextMonth([_,__]) {
     currentDate = currentDate.subtract(new Duration(days:currentDate.day-1));
     currentDate = currentDate.add(new Duration(days:32));
