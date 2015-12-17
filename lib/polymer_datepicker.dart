@@ -6,21 +6,23 @@ import 'dart:html';
 import 'dart:async';
 import 'package:polymer/polymer.dart';
 
-
 import "package:web_components/web_components.dart" show HtmlImport;
+import 'package:polymer_autonotify/polymer_autonotify.dart';
 import "package:observe/observe.dart";
-
 
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
 import "dart:js" as js;
+
 import "package:polymer_elements/paper_input.dart";
 import "package:polymer_elements/paper_button.dart";
 import "package:polymer_elements/paper_material.dart";
-import "package:polymer_elements/iron_icon.dart";
-import "package:polymer_elements/iron_overlay_behavior.dart";
 import "package:polymer_elements/paper_toggle_button.dart";
-import 'package:polymer_autonotify/polymer_autonotify.dart';
+
+import "package:polymer_elements/iron_icon.dart";
+import "package:polymer_elements/iron_fit_behavior.dart";
+import "package:polymer_elements/iron_overlay_behavior.dart";
+import "package:polymer_elements/iron_resizable_behavior.dart";
 
 class Day extends Observable  {
 
@@ -59,7 +61,7 @@ class Week extends Observable  {
 }
 
 @PolymerRegister("date-picker-overlay")
-class DatePickerOverlay extends PolymerElement with IronOverlayBehavior {
+class DatePickerOverlay extends PolymerElement with IronFitBehavior, IronResizableBehavior, IronOverlayBehavior {
 
   DatePickerOverlay.created() : super.created() {}
 
@@ -90,7 +92,7 @@ const EventStreamProvider<CustomEvent> _selectDateEvent = const EventStreamProvi
 ///         dateonly="true">
 ///     </date-picker>
 ///
-class DatePicker extends PolymerElement with Observable, PolymerAutoNotifySupportJsBehavior, PolymerAutoNotifySupportBehavior {
+class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
   /// A flag for field validation
   @observable @property bool required=false;
 
