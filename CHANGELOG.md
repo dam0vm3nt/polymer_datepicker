@@ -1,3 +1,11 @@
+## 0.3.1+1
+
+minor fixes
+
+## 0.3.1
+
+polished `pubspec`, added `required` for validation
+
 ## 0.3.0+2
 
 Added a small demo.
