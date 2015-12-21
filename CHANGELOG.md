@@ -1,3 +1,7 @@
+## 0.3.1+2
+
+fixed an issue causing toubles when reopening the overlay.
+
 ## 0.3.1+1
 
 minor fixes
