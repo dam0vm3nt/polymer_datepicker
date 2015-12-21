@@ -108,7 +108,8 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
   @observable @property String label;
 
   /// A flag to select only date without time info (default: false)
-  @observable @property bool dateonly = false;
+  @deprecated @observable @property bool dateonly = false;
+  @observable @property bool dateOnly = false;
 
   @observable @property List<Week> month;
 
@@ -142,7 +143,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
   
   DatePicker.created() : super.created() {
     format = new DateFormat.yMd();
-    if (!dateonly) {
+    if (!dateOnly && !dateonly) {
       format.add_Hm();
     }
     currentDate = new DateTime.now();
@@ -154,10 +155,10 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
   /// The date format (default: locale for `DateFormat.yMd`)
   @observable @property String dateFormat = new DateFormat.yMd().pattern;
 
-  @Observe("dateonly,dateFormat")
+  @Observe("dateOnly,dateonly,dateFormat")
   void changeDateFormat([_,__]) {
     format = new DateFormat(dateFormat);
-    if (!dateonly) {
+    if (!dateOnly && !dateonly) {
       format.add_Hm();
     }
     if (selectedDate!=null) {
