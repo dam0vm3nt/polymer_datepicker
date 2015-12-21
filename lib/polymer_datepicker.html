@@ -139,7 +139,7 @@
           <paper-input disabled="[[disabled]]" id="input" on-click="showPicker" required="[[required]]" auto-validate="" value="{{textDate}}" label="[[label]]" on-blur="inputLeft" class$="[[computeInputClass(dateonly)]]"></paper-input>
         </div>
         <div style="position:relative">
-            <date-picker-overlay id="pick" style="position:absolute;left:0;top:0" autofocusdisabled="true" autoclosedisabled="true" opened="[[pickerOpen]]" on-iron-overlay-opened="doPos" on-iron-overlay-closed="doClose" on-mousedown="cancelClose">
+            <date-picker-overlay id="pick" style="position:absolute;left:0;top:0" autofocusdisabled="true" autoclosedisabled="true" opened="{{pickerOpen}}" on-iron-overlay-opened="doPos" on-mousedown="cancelClose">
                 <paper-material elevation="2">
 
                 <div id="month" layout="" vertical="" class="monthCell">
