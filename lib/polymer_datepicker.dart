@@ -26,29 +26,25 @@ import "package:polymer_elements/iron_resizable_behavior.dart";
 
 class Day extends Observable  {
 
+static DateFormat fmt = new DateFormat("EEE");
+
   @observable DateTime date;
-  
+
   @observable bool selected;
 
   @observable bool today;
 
   @observable bool other;
 
+  @observable String weekDay;
 
-
-  
-  DateFormat fmt = new DateFormat("EEE");
-  
-  String get weekDay => fmt.format(date);
-  
-  Day(DateTime d,int curMonth,DateTime selectedDate) {
-    this.date = d;
-
-    other = curMonth != d.month;
-    selected = (selectedDate != null&& d.day==selectedDate.day&&d.month==selectedDate.month);
+  Day(DateTime d, int curMonth, DateTime selectedDate) : this.date = d
+  {
+    other = curMonth != d?.month;
+    selected = date?.day == selectedDate?.day && date?.year == selectedDate?.year && date?.month == selectedDate?.month;
     DateTime now = new DateTime.now();
-
-    today = ( date.month == now.month && date.year == now.year && date.day == now.day);
+    today = date?.month == now.month && date?.year == now.year && date?.day == now.day;
+    weekDay = fmt.format(date).substring(0,1);
   }
 }
 
