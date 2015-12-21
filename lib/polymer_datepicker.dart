@@ -119,6 +119,8 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
   /// Text version of the date bindable, r/w
   @observable @property String textDate;
 
+  @observable @property bool startWithSunday = false;
+
   @Observe("required")
   void updateRequired(_)
   {
@@ -280,7 +282,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
     _logger.fine("Create month");
       DateTime first = new DateTime.fromMillisecondsSinceEpoch(currentDate.millisecondsSinceEpoch);
       first = first.subtract(new Duration(days:first.day-1));
-      while (first.weekday!=DateTime.MONDAY) {
+      while (first.weekday!=(startWithSunday ? DateTime.SUNDAY : DateTime.MONDAY)) {
         first = first.subtract(new Duration(days:1));
       }
       month = new List.generate(6, (int w) => new Week(first.add(new Duration(days:7*w)),currentDate.month,selectedDate));
