@@ -156,7 +156,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
   @observable @property String dateFormat = new DateFormat.yMd().pattern;
 
   @Observe("dateOnly,dateonly,dateFormat")
-  void changeDateFormat([_,__]) {
+  void changeDateFormat([_,__,___]) {
     format = new DateFormat(dateFormat);
     if (!dateOnly && !dateonly) {
       format.add_Hm();
