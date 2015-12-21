@@ -40,10 +40,10 @@ static DateFormat fmt = new DateFormat("EEE");
 
   Day(DateTime d, int curMonth, DateTime selectedDate) : this.date = d
   {
-    other = curMonth != d?.month;
-    selected = date?.day == selectedDate?.day && date?.year == selectedDate?.year && date?.month == selectedDate?.month;
+    other = curMonth != date.month;
+    selected = date.day == selectedDate?.day && date.year == selectedDate?.year && date.month == selectedDate?.month;
     DateTime now = new DateTime.now();
-    today = date?.month == now.month && date?.year == now.year && date?.day == now.day;
+    today = date.month == now.month && date.year == now.year && date.day == now.day;
     weekDay = fmt.format(date).substring(0,1);
   }
 }
