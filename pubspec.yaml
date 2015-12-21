@@ -16,6 +16,15 @@ dependencies:
    ref: reflectable
    url: https://github.com/dam0vm3nt/observe.git
 
+
+dependency_overrides:
+  polymer_autonotify:
+   path: ../polymer_autonotify
+  observe:
+    path: ../observe
+
+
+
 transformers:
 - polymer_autonotify
 - observe
