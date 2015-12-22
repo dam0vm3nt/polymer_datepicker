@@ -287,8 +287,13 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
         first = first.subtract(new Duration(days:1));
       }
       month = new List.generate(6, (int w) => new Week(first.add(new Duration(days:7*w)),currentDate.month,selectedDate),growable: true);
-      if (month.last.days[0].other)
-	    month.removeLast();
+
+      bool others = true;
+      while(others) {
+	    if (month.last.days[0].other)
+		    month.removeLast();
+	    else others = false;
+      }
       firstWeek = month.first;
   }
 
