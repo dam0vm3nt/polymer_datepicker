@@ -184,11 +184,9 @@ class DatePickerOverlay
 			_parent.selectedDate),
 			growable: true
 		);
-		bool others = true;
-		while(others) {
-			if (month.last.days[0].other)
-				month.removeLast();
-			else others = false;
+
+		while(month.last.days[0].other) {
+			month.removeLast();
 		}
 		firstWeek = month.first;
 	}
