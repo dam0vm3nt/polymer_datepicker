@@ -1,181 +1,268 @@
-
 <dom-module id="date-picker-overlay">
-    <template>
-        <div>
-            <content></content>
-        </div>
-    </template>
+	<style>
+		:host {
+			display: inline-block;
+			font-family: RobotoDraft, Roboto, sans-serif;
+			color: var(--primary-text-color);
+
+		}
+
+		.daySelected {
+
+			margin-top: -5px;
+			outline: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			-webkit-user-select: none;
+			-webkit-tap-highlight-color: rgba(0,0,0,0);
+			user-select: none;
+			cursor: pointer;
+
+			min-width: 0;
+			background: var(--paper-fab-background, --accent-color);
+			color: var(--text-primary-color);
+			border-radius: 50%;
+
+			@apply(--layout-vertical);
+			@apply(--layout-center-center);
+			@apply(--polymer-datepicker-day-selected);
+		}
+
+		.dayTodaySelected {
+			font-weight: bolder;
+			@apply(--polymer-datepicker-day-today-selected);
+		}
+
+
+		.dayToday {
+			color: var(--dark-primary-color);
+			font-weight: bold;
+			@apply(--polymer-datepicker-day-today);
+		}
+
+		.cell {
+			text-align: center;
+			max-width: 25px;
+			max-height: 25px;
+			width: 25px;
+			height: 25px;
+			padding: 6px;
+			@apply(--polymer-datepicker-cell);
+		}
+
+
+		.dayCell {
+			cursor: pointer;
+			@apply(--polymer-datepicker-day-cell);
+		}
+
+
+		.titleCell {
+			color: var(--secondary-text-color);
+			text-transform: uppercase;
+			@apply(--polymer-datepicker-day-title);
+		}
+
+		.monthYear {
+			color: var(--primary-text-color);
+			font-size: 1.15vh;
+			font-weight: bold;
+			@apply(--polymer-datepicker-month-year);
+		}
+
+
+		.monthCell {
+
+			font-size: x-small;
+			background-color: white;
+			@apply(--polymer-datepicker-monthcell);
+		}
+
+		#header {
+
+			@apply(--polymer-datepicker-header);
+		}
+
+		.input_dateonly {
+			width: var(--datepicker-width, 6em);
+		}
+
+		.input_full {
+			width: var(--datepicker-width, 12em);
+		}
+
+		.topBar {
+			background: var(--dark-primary-color);
+			color: var(--text-primary-color);
+			padding: 0.5em;
+			font-size: 0.75em;
+			font-weight: bold;
+			@apply(--layout-center-center);
+			@apply(--polymer-datepicker-top-bar);
+		}
+
+		.middleBar {
+			background: var(--default-primary-color);
+			color: var(--text-primary-color);
+			font-size: 1.15em;
+			@apply(--layout-center-center);
+			@apply(--polymer-datepicker-middle-bar);
+		}
+
+		.middleBar .light {
+			color: var(--light-primary-color);
+		}
+
+		.middleBar .big {
+			color: var(--text-primary-color);
+			font-weight: bold;
+			font-size: 2em;
+		}
+
+		.middleBar .upper {
+			text-transform: uppercase;
+		}
+		.flex {
+			@apply(--layout-flex);
+		}
+
+		.flex-horizontal {
+			@apply(--layout-horizontal);
+		}
+
+		iron-selector > * {
+			padding: 8px;
+			cursor: pointer;
+		}
+		.horizontal-section {
+			padding: 0;
+			overflow-x: hidden;
+			overflow-y: auto;
+			height: 233px;
+		}
+		.iron-selected {
+			background: var(--default-primary-color);
+			color: var(--text-primary-color);
+		}
+		iron-selector > *:hover {
+			background: var(--light-primary-color);
+			color: var(--primary-text-color);
+		}
+		.flex-end-justified {
+			padding-top: 8px;
+			@apply(--layout-horizontal);
+			@apply(--layout-end-justified);
+		}
+
+
+	</style>
+	<template>
+		<paper-card>
+			<div class="topBar layout horizontal">[[dayOfWeekDisplay]]</div>
+			<div class="card-content vertical layout middleBar">
+				<div class="upper">[[monthShortDisplay]]</div>
+				<div class="big">[[dayDisplay]]</div>
+				<div class="light">[[yearSelectedDisplay]]</div>
+			</div>
+			<div class="card-content" hidden="[[!pickerOpen]]" style="width:259px;">
+				<div class="container flex-horizontal">
+					<div class="horizontal-section flex">
+						<iron-selector id="months" selected="{{monthListSelected}}">
+							<template is="dom-repeat" items="[[monthList]]" as="m">
+								<div>[[m]]</div>
+							</template>
+						</iron-selector>
+					</div>
+					<div id="years" class="horizontal-section" style="width:75px;">
+						<iron-selector selected="{{yearListSelected}}">
+							<template is="dom-repeat" items="[[yearList]]" as="y">
+								<div>[[y]]</div>
+							</template>
+						</iron-selector>
+					</div>
+				</div>
+				<div class="buttons flex-end-justified">
+					<paper-button on-click="showPickMonthYear" autofocus>OK</paper-button>
+				</div>
+			</div>
+			<div id="month" class="card-content vertical layout monthCell" hidden="[[pickerOpen]]">
+				<div class="horizontal layout justified center" id="header">
+					<paper-button style="min-width:0px" on-click="prevMonth">
+						<iron-icon icon="arrow-back" style="width:20px;height:20px"></iron-icon>
+					</paper-button>
+					<div>
+						<template is="dom-if" if="[[!quickChange]]">
+							<div class="monthYear">[[monthDisplay]] [[yearDisplay]]</div>
+						</template>
+						<template is="dom-if" if="[[quickChange]]">
+							<paper-input on-click="showPickMonthYear" value="[[monthDisplay]] [[yearDisplay]]" label="Change Month Year"></paper-input>
+						</template>
+					</div>
+					<paper-button style="min-width:0px" on-click="nextMonth">
+						<iron-icon icon="arrow-forward" style="width:20px;height:20px"></iron-icon>
+					</paper-button>
+				</div>
+				<div class="horizontal layout">
+					<template is="dom-repeat" items="[[firstWeek.days]]" as="day">
+						<div class="cell titleCell layout center">{{day.weekDay}}</div>
+					</template>
+				</div>
+				<template is="dom-repeat" items="[[month]]" as="week">
+					<div class="horizontal layout">
+						<template is="dom-repeat" items="[[week.days]]" as="day">
+							<template is="dom-if" if="[[!day.other]]">
+								<div class$="cell relative [[computeDayClass(day.selected,day.today)]]"
+								     on-click="selDate"
+								     data-time$="[[computeMillisecondsSinceEpoch(day)]]">
+									<span>[[computeDay(day)]]</span>
+								</div>
+							</template>
+							<template is="dom-if" if="[[day.other]]">
+								<div class="cell relative"></div>
+							</template>
+						</template>
+					</div>
+				</template>
+			</div>
+		</paper-card>
+	</template>
 </dom-module>
-
 <dom-module id="date-picker">
-  <style>
-      [layout] {
-        @apply(--layout);
-        }
-    [layout][vertical] {
-      @apply(--layout-vertical);
-    }
-    [relative] {
-      position: relative;
-    }
-    [layout][horizontal] {
-      @apply(--layout-horizontal);
-    }
-    [layout][center] {
-      @apply(--layout-center);
-    }
-    [layout][justified] {
-      @apply(--layout-justified);
-    }
-  </style>
-  <style>
-      :host {
-        display:inline-block;
-        
-      }
-  
-      .day {
-      }
-      .dayOther {
-        
-        color:#e6e6e6;
-          @apply(--polymer-datepicker-day-other);
-      }
-      .daySelected {
-        background-color:yellow;
-        color:black;
-        font-weight:bold;
-          @apply(--polymer-datepicker-day-selected);
-      }
+	<style>
+		:host {
+			display: inline-block;
 
-      .dayToday {
-          outline: 3px solid darkred;
-          outline-offset: -2px;
-          z-index: 2;
-          @apply(--polymer-datepicker-today);
-      }
-      
-      .weekCol {
-        
-      }
-      
-      .dayCell {
-        max-width:20px;
-        max-height:20px;
-        width:20px;
-        height:20px;
-        padding:2px;
-        border-left:1px solid #e6e6e6;
-        border-top:1px solid #e6e6e6;
-        @apply(--polymer-datepicker-daycell);
-      }
-      
-      .monthCell {
-        border-right: 1px solid #e6e6e6;
-        border-bottom: 1px solid #e6e6e6;
+		}
 
-          font-size:x-small;
-          background-color: white;
-          @apply(--polymer-datepicker-monthcell);
-      }
-      
-      #header {
-        border-right: 1px solid #e6e6e6;
-        border-top: 1px solid #e6e6e6;
-        border-left: 1px solid #e6e6e6;
-          @apply(--polymer-datepicker-header);
-      }
-      
-      .input_dateonly {
-        /*width: 6em;*/
-        width: var(--datepicker-width,6em) ;
-      }
+		#pick {
+			position: static;
+		}
 
-      .input_full {
-          width: var(--datepicker-width,12em) ;
-      }
-      
-
-      
-      #picker {
-          position: absolute;
-          z-index: 100;
-          overflow: visible;
-          width:176px;
-          height:auto;
-
-
-      }
-
-      .halign_left {
-        left:0;
-      }
-
-      .halign_right {
-        right:0;
-      }
-
-      .valign_top {
-          top:0;
-      }
-
-      .valign_bottom {
-          bottom:30px;
-      }
-
-
-      #pick {
-          position: static;
-      }
-
-      #month {
-
-      }
-      
-    </style>
-  <template>
-    <div layout="" vertical="" relative="">
-        <div layout="" horizontal="">
-          <paper-input disabled="[[disabled]]" id="input" on-click="showPicker" required="[[required]]" auto-validate="" value="{{textDate}}" label="[[label]]" on-blur="inputLeft" class$="[[computeInputClass(dateonly)]]"></paper-input>
-        </div>
-        <div style="position:relative">
-            <date-picker-overlay id="pick" style="position:absolute;left:0;top:0" autofocusdisabled="true" autoclosedisabled="true" opened="{{pickerOpen}}" on-iron-overlay-opened="doPos" on-mousedown="cancelClose">
-                <paper-material elevation="2">
-
-                <div id="month" layout="" vertical="" class="monthCell">
-
-                <div layout="" horizontal="" justified="" center="" id="header">
-                  <paper-button style="min-width:0px" on-click="prevMonth"><iron-icon icon="arrow-back" style="width:20px;height:20px"></iron-icon></paper-button>
-                  <div>[[monthYear]]</div>
-                  <paper-button style="min-width:0px" on-click="nextMonth"><iron-icon icon="arrow-forward" style="width:20px;height:20px"></iron-icon></paper-button>
-                </div>
-                <div layout="" horizontal="">
-                    <!--
-                  <div class="dayCell"><div class="weekCol"></div></div>
-                  -->
-                  <template is="dom-repeat" items="[[firstWeek.days]]" as="day">
-                    <div class="dayCell"><div class="weekCol">{{day.weekDay}}</div></div>
-                  </template>
-                </div>
-                <template is="dom-repeat" items="[[month]]" as="week">
-                  <div layout="" horizontal="">
-                      <!--
-                    <div class="dayCell weekCol"></div>
-                    -->
-                    <template is="dom-repeat" items="[[week.days]]" as="day">
-                      <div relative="" on-click="selDate" class$="[[computeDayClass(day.selected,day.other,day.today)]]" data-time$="[[computeMillisecondsSinceEpoch(day)]]">
-                       <span>[[computeDay(day)]]</span>
-                      </div>
-                    </template>
-                  </div>
-                </template>
-              </div>
-
-                </paper-material>
-            </date-picker-overlay>
-
-        </div>
-    </div>
-
-  </template>
+	</style>
+	<template>
+		<div class="layout vertical relative">
+			<div class="layout horizontal">
+				<paper-input id="input"
+				             disabled="[[disabled]]"
+				             on-click="showPicker"
+				             required="[[required]]"
+				             auto-validate=""
+				             value="{{textDate}}"
+				             label="[[label]]"
+				             on-blur="inputLeft"
+				             class$="[[computeInputClass(dateonly)]]"></paper-input>
+			</div>
+			<div style="position:relative">
+				<date-picker-overlay id="pick"
+				                     style="position:absolute;left:0;top:0"
+				                     autofocusdisabled="true"
+				                     autoclosedisabled="true"
+				                     opened="{{pickerOpen}}"
+				                     on-iron-overlay-opened="doPos"
+				                     on-mousedown="cancelClose"
+				                     quick-change="{{quickChange}}"
+				                     start-with-sunday="{{startWithSunday}}"></date-picker-overlay>
+			</div>
+		</div>
+	</template>
 </dom-module>

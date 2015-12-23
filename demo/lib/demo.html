@@ -1,8 +1,38 @@
 <dom-module id="test-polymer-datepicker">
- <template>
-	<h1> hello </h1>
-	<date-picker label="as locale" selected-date="{{myDate}}"></date-picker>
-	<date-picker label="fixed format" date-format="yyyy-MM-dd" selected-date="{{myDate}}"></date-picker>
-	<div>[[myDate]]</div>
- </template>
+	<template>
+		<h1> hello </h1>
+		<date-picker label="as locale"
+		             selected-date="{{myDate}}"></date-picker><br />
+		<date-picker label="fixed format"
+		             date-format="yyyy-MM-dd"
+		             selected-date="{{myDate}}"></date-picker><br />
+		<date-picker label="Quick Select"
+		             date-format="yyyy-MM-dd"
+		             selected-date="{{myDate}}"
+		             max-year="2016"
+		             min-year="1998"
+		             quick-change></date-picker><br />
+		<date-picker label="Start With Sunday"
+		             date-format="yyyy-MM-dd"
+		             selected-date="{{myDate}}"
+		             max-year="2016"
+		             min-year="1998"
+		             start-with-sunday></date-picker><br />
+		<date-picker label="Start With Sunday Date Only"
+		             date-format="yyyy-MM-dd"
+		             selected-date="{{myDate}}"
+		             max-year="2016"
+		             min-year="1998"
+		             start-with-sunday
+		             date-only></date-picker><br />
+		<date-picker label="Quick Start With Sunday Date Only"
+		             date-format="yyyy-MM-dd"
+		             selected-date="{{myDate}}"
+		             max-year="2016"
+		             min-year="1998"
+		             start-with-sunday
+		             quick-change
+		             date-only></date-picker><br />
+		<div>[[myDate]]</div>
+	</template>
 </dom-module>
