@@ -404,8 +404,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 
 		_overlay.monthList = tMonth;
 		computeYears();
-
-		var n = new DateTime.now();
+		
 		_updateOverlayDate();
 	}
 
@@ -422,7 +421,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 		ov.style.left = "${left}px";
 		ov.style.top = "${top}px";
 	}
-	
+
 	void _updateOverlayDate (){
 		if (_overlay != null) {
 			var n = selectedDate != null ? selectedDate : new DateTime.now();
