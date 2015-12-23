@@ -1,3 +1,7 @@
+## 0.4.0+1
+
+bugfixes
+
 ## 0.4.0
 
 Various fixes and introducing material style (thanks to @barfittc ):
