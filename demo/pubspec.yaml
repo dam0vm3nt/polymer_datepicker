@@ -8,7 +8,7 @@ environment:
 dependencies:
  polymer_elements: "^1.0.0-rc.5"
  web_components: '^0.12.0'
- reflectable: ^0.4.0
+ reflectable: ">=0.4.0 <0.6.0"
  polymer_autonotify: "^1.0.0-rc.6+4"
  #polymer_datepicker: ^0.3.0
  polymer_datepicker:

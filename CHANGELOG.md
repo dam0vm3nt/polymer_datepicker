@@ -1,3 +1,11 @@
+## 0.4.0
+
+Various fixes and introducing material style (thanks to @barfittc ):
+ - Added start with Sunday flag
+ - deprecated dateonly (all lower), added dateOnly (camel cased) 
+ - prevent the last week from being fully the next month.
+ - added quick change flag
+ 
 ## 0.3.1+2
 
 fixed an issue causing toubles when reopening the overlay.
