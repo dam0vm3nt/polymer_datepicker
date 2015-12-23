@@ -354,14 +354,16 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 	String maxYear = "2020";
 
 	@reflectable
-	@Observe("minyear,maxyear")
+	@Observe("minYear,maxYear")
 	computeYears([_, __]) {
-		var t = [],
-			maxY = int.parse(maxYear),
-			minY = int.parse(minYear);
-		for (; maxY >= minY; maxY--)
-			t.add(maxY);
-		_overlay.yearList = t;
+		if (_overlay != null) {
+			var t = [],
+				maxY = int.parse(maxYear),
+				minY = int.parse(minYear);
+			for (; maxY >= minY; maxY--)
+				t.add(maxY);
+			_overlay.yearList = t;
+		}
 	}
 
 	DatePicker.created() : super.created() {
@@ -404,7 +406,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 
 		_overlay.monthList = tMonth;
 		computeYears();
-		
+
 		_updateOverlayDate();
 	}
 
