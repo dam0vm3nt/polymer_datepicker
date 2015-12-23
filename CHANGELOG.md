@@ -5,6 +5,8 @@ Various fixes and introducing material style (thanks to @barfittc ):
  - deprecated dateonly (all lower), added dateOnly (camel cased) 
  - prevent the last week from being fully the next month.
  - added quick change flag
+
+Updated deps on demo for `polymer-rc.10` upgrade
  
 ## 0.3.1+2
 
