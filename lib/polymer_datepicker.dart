@@ -406,18 +406,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 		computeYears();
 
 		var n = new DateTime.now();
-		_overlay.dayOfWeekDisplay = selectedDate != null
-			? _overlay.dateFormatDayOfWeek.format(selectedDate)
-			: _overlay.dateFormatDayOfWeek.format(n);
-		_overlay.monthShortDisplay = selectedDate != null
-			? _overlay.dateFormatMonthShort.format(selectedDate)
-			: _overlay.dateFormatMonthShort.format(n);
-		_overlay.dayDisplay = selectedDate != null
-			? "${selectedDate.day}"
-			: "${n.day}";
-		_overlay.yearSelectedDisplay = selectedDate != null
-			? _overlay.dateFormatYear.format(selectedDate)
-			: _overlay.dateFormatYear.format(n);
+		_updateOverlayDate();
 	}
 
 	@reflectable
@@ -433,16 +422,23 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 		ov.style.left = "${left}px";
 		ov.style.top = "${top}px";
 	}
+	
+	void _updateOverlayDate (){
+		if (_overlay != null) {
+			var n = selectedDate != null ? selectedDate : new DateTime.now();
+			_overlay.dayOfWeekDisplay = _overlay.dateFormatDayOfWeek.format(n);
+			_overlay.monthShortDisplay = _overlay.dateFormatMonthShort.format(n);
+			_overlay.dayDisplay = "${n.day}";
+			_overlay.yearSelectedDisplay = _overlay.dateFormatYear.format(n);
+		}
+	}
 
 	@Observe("selectedDate")
 	void selectedDateChanged([_]) {
 
 		_logger.fine("Date changed : ${selectedDate}");
 
-		_overlay.dayOfWeekDisplay = selectedDate != null ? _overlay.dateFormatDayOfWeek.format(selectedDate) : "---";
-		_overlay.monthShortDisplay = selectedDate != null ? _overlay.dateFormatMonthShort.format(selectedDate) : "---";
-		_overlay.dayDisplay = selectedDate != null ? "${selectedDate.day}" : "--";
-		_overlay.yearSelectedDisplay = selectedDate != null ? _overlay.dateFormatYear.format(selectedDate) : "----";
+		_updateOverlayDate();
 
 		String newText;
 		if (selectedDate != null) {
