@@ -195,7 +195,7 @@
 							<div class="monthYear">[[monthDisplay]] [[yearDisplay]]</div>
 						</template>
 						<template is="dom-if" if="[[quickChange]]">
-							<paper-input on-click="showPickMonthYear" value="[[monthDisplay]] [[yearDisplay]]" label="Change Month Year"></paper-input>
+							<paper-button on-click="showPickMonthYear" >[[monthDisplay]] [[yearDisplay]]</paper-button>
 						</template>
 					</div>
 					<paper-button style="min-width:0px" on-click="nextMonth">
@@ -212,8 +212,7 @@
 						<template is="dom-repeat" items="[[week.days]]" as="day">
 							<template is="dom-if" if="[[!day.other]]">
 								<div class$="cell relative [[computeDayClass(day.selected,day.today)]]"
-								     on-click="selDate"
-								     data-time$="[[computeMillisecondsSinceEpoch(day)]]">
+								     on-click="selDate">
 									<span>[[computeDay(day)]]</span>
 								</div>
 							</template>

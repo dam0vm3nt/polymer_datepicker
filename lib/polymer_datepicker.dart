@@ -68,7 +68,7 @@ class DatePickerOverlay
 {
 	DatePicker _parent;
 
-	Logger _logger = new Logger("DTPKDSP");
+	Logger _logger = new Logger("polymer_datepicker_overlay");
 
 	DateFormat dateFormatYear = new DateFormat("yyyy");
 	DateFormat dateFormatMonth = new DateFormat("MMMM");
@@ -97,10 +97,6 @@ class DatePickerOverlay
 
 		return sb.toString();
 	}
-
-	@reflectable
-	String computeMillisecondsSinceEpoch(Day day) =>
-		day.date.millisecondsSinceEpoch.toString();
 
 	@reflectable
 	String computeDay(Day day) => day.date.day.toString();
@@ -252,10 +248,11 @@ class DatePickerOverlay
 		_parent.pickerOpen = false;
 		//fire("change");
 
-		Element el = evt.path.firstWhere((Element e) =>
-			e.attributes.containsKey("data-time"));
-		String attr = el.attributes["data-time"];
-		_parent.selectedDate = new DateTime.fromMillisecondsSinceEpoch(int.parse(attr));
+		DomRepeatModel mdl = new DomRepeatModel.fromEvent(convertToJs(evt));
+
+		Day day = mdl["day"];
+		_parent.selectedDate = day.date;
+
 	}
 
 }
@@ -334,7 +331,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 		($["input"] as PaperInput).validate();
 	}
 
-	Logger _logger = new Logger("DTPICK");
+	Logger _logger = new Logger("polymer_datepicker");
 
 	/// The date format (default: locale for `DateFormat.yMd`)
 	@observable
@@ -434,26 +431,28 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 
 	@Observe("selectedDate")
 	void selectedDateChanged([_]) {
+		debounce("selected_date_changed",(){
+			_logger.fine("Date changed : ${selectedDate}");
 
-		_logger.fine("Date changed : ${selectedDate}");
+			_updateOverlayDate();
 
-		_updateOverlayDate();
+			String newText;
+			if (selectedDate != null) {
+				newText = format.format(selectedDate);
+			} else {
+				newText = null;
+			}
 
-		String newText;
-		if (selectedDate != null) {
-			newText = format.format(selectedDate);
-		} else {
-			newText = null;
-		}
-
-		if (newText == textDate || _comingFromTextChange) {
-			_comingFromTextChange = false;
-			return;
-		}
-		textDate = newText;
-		_logger.fine("Selected Date is ${selectedDate}");
-		dispatchEvent(new CustomEvent("selectdate"));
-		dispatchEvent(new CustomEvent("select-date-changed"));
+			if (newText == textDate || _comingFromTextChange) {
+				_comingFromTextChange = false;
+				return;
+			}
+			textDate = newText;
+			_logger.fine("Selected Date is ${selectedDate}");
+			fire("selectdate");
+			fire("select-date-changed");
+			updateStyles();
+		});
 	}
 
 	bool _comingFromTextChange = false;
@@ -476,8 +475,8 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 			_logger.fine("Invalid date :${textDate} : ${e}");
 		}
 		_logger.fine("Parsed date : ${selectedDate}");
-		dispatchEvent(new CustomEvent("selectdate"));
-		dispatchEvent(new CustomEvent("select-date-changed"));
+		fire("selectdate");
+		fire("select-date-changed");
 	}
 
 	@reflectable

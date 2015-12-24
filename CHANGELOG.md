@@ -1,3 +1,7 @@
+## 0.4.0+2
+
+Minor fixes and clean ups.
+
 ## 0.4.0+1
 
 bugfixes
