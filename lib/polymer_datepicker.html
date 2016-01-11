@@ -168,15 +168,15 @@
 				<div class="container flex-horizontal">
 					<div class="horizontal-section flex">
 						<iron-selector id="months" selected="{{monthListSelected}}">
-							<template is="dom-repeat" items="[[monthList]]" as="m">
-								<div>[[m]]</div>
+							<template is="dom-repeat" items="[[monthList]]" as="month">
+								<div>[[month]]</div>
 							</template>
 						</iron-selector>
 					</div>
 					<div id="years" class="horizontal-section" style="width:75px;">
 						<iron-selector selected="{{yearListSelected}}">
-							<template is="dom-repeat" items="[[yearList]]" as="y">
-								<div>[[y]]</div>
+							<template is="dom-repeat" items="[[yearList]]" as="year">
+								<div>[[year]]</div>
 							</template>
 						</iron-selector>
 					</div>
@@ -254,8 +254,6 @@
 			<div style="position:relative">
 				<date-picker-overlay id="pick"
 				                     style="position:absolute;left:0;top:0"
-				                     autofocusdisabled="true"
-				                     autoclosedisabled="true"
 				                     opened="{{pickerOpen}}"
 				                     on-iron-overlay-opened="doPos"
 				                     on-mousedown="cancelClose"

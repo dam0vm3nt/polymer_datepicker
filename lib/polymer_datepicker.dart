@@ -82,6 +82,7 @@ class DatePickerOverlay
 		pickerOpen = !pickerOpen;
 	}
 
+
 	@reflectable
 	String computeDayClass(bool selected, bool today) {
 		StringBuffer sb = new StringBuffer("dayCell");
@@ -496,15 +497,23 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 	@reflectable
 	void cancelClose([_, __]) {
 		_clickedIn = true;
+		_refocus = false;
 	}
 
+	bool _refocus;
 	@reflectable
 	void inputLeft([_, __]) {
 		if (_clickedIn) {
+			if (!_refocus) {
+				$['input'].focus();
+				_refocus=true;
+				return;
+			}
 			_clickedIn = false;
-			$['input'].focus();
+			print("CLOSE CANCELLED");
 			return;
 		}
+		print("CLOSING");
 		pickerOpen = false;
 
 		if (textDate == null || textDate.isEmpty) {
