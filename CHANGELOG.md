@@ -1,3 +1,9 @@
+## 0.4.0+3
+
+Fixed bug occurring when compiling JS and minifying (never use single letter variables in `html` templates ...).
+Fixed bug causing overlay to be closed when loosing focus with newer polymers.
+Updated to user `autonotify_observe`.
+
 ## 0.4.0+2
 
 Minor fixes and clean ups.
