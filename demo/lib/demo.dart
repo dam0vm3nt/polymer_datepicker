@@ -3,8 +3,7 @@ library polymer_autonotify.demo;
 
 import "package:polymer/polymer.dart";
 import "package:web_components/web_components.dart" show HtmlImport;
-import "package:polymer_autonotify/polymer_autonotify.dart";
-import "package:observe/observe.dart";
+import "package:autonotify_observe/autonotify_observe.dart";
 
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_input.dart";

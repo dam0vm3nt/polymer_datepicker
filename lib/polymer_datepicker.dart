@@ -12,6 +12,7 @@ import 'package:autonotify_observe/autonotify_observe.dart';
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
 import "dart:js" as js;
+import "dart:math" as math show min;
 
 import "package:polymer_elements/paper_input.dart";
 import "package:polymer_elements/paper_button.dart";
@@ -26,6 +27,8 @@ import "package:polymer_elements/iron_fit_behavior.dart";
 import "package:polymer_elements/iron_overlay_behavior.dart";
 import "package:polymer_elements/iron_resizable_behavior.dart";
 import "package:polymer_elements/iron_selector.dart";
+
+import "package:polymer_elements/iron_icons.dart";
 
 class Day extends Observable {
 
@@ -407,6 +410,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 
 	@reflectable
 	void doPos(Event e, var detail) {
+
 		DatePickerOverlay ov = $['pick'] as DatePickerOverlay;
 
 		// Ok : let's position the damn thing.
@@ -414,9 +418,21 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 		var left = r.left;
 		var top = r.top;
 
+		num h = window.innerHeight;
+
+		num oh = ov.scrollHeight;
+
+		top = math.min(h-oh,top);
+
+		num w = window.innerWidth;
+		num ow = ov.scrollWidth;
+
+		left = math.min(w-ow,left);
+
 		ov.style.position = "fixed";
 		ov.style.left = "${left}px";
 		ov.style.top = "${top}px";
+
 	}
 
 	void _updateOverlayDate (){

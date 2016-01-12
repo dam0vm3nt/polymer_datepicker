@@ -1,6 +1,6 @@
 author: Drafintech <info@drafintech.it>
 description: The simple polymer datepicker you were missing
-version: 0.4.0+4
+version: 0.4.0+5
 name: polymer_datepicker
 homepage: https://github.com/dam0vm3nt/polymer_datepicker
 environment:

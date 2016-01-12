@@ -1,3 +1,12 @@
+## 0.4.0+5
+
+Added possibility to specify a `prefix` or a `suffix` inside the datepicker :
+```
+<polymer-datepicker><iron-icon icon="today" prefix></iron-icon></polymer-datepicker>
+```
+
+Fixed positioning when near window border.
+
 ## 0.4.0+4
 
 Updated demo for latest autonotify, and other minor fixes.

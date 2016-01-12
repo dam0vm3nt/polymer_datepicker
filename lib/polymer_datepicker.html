@@ -155,6 +155,7 @@
 		}
 
 
+
 	</style>
 	<template>
 		<paper-card>
@@ -237,9 +238,10 @@
 			position: static;
 		}
 
+
 	</style>
 	<template>
-		<div class="layout vertical relative">
+		<div class="relative">
 			<div class="layout horizontal">
 				<paper-input id="input"
 				             disabled="[[disabled]]"
@@ -249,7 +251,10 @@
 				             value="{{textDate}}"
 				             label="[[label]]"
 				             on-blur="inputLeft"
-				             class$="[[computeInputClass(dateonly)]]"></paper-input>
+				             class$="[[computeInputClass(dateonly)]]">
+					<content select="[prefix]"></content>
+					<content select="[suffix]"></content>
+				</paper-input>
 			</div>
 			<div style="position:relative">
 				<date-picker-overlay id="pick"
