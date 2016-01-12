@@ -12,9 +12,9 @@ dependencies:
 # reflectable: any
  autonotify_observe: "^1.0.0"
 
-dependency_overrides:
- autonotify_observe:
-  path: ../autonotify_observe
+#dependency_overrides:
+# autonotify_observe:
+#  path: ../autonotify_observe
 #  polymer_autonotify:
 #   path: ../polymer_autonotify
 #  observe:
