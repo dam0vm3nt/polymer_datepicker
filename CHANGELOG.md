@@ -1,3 +1,7 @@
+## 0.4.0+4
+
+Updated demo for latest autonotify, and other minor fixes.
+
 ## 0.4.0+3
 
 Fixed bug occurring when compiling JS and minifying (never use single letter variables in `html` templates ...).

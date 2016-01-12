@@ -1,6 +1,6 @@
 author: Drafintech <info@drafintech.it>
 description: The simple polymer datepicker you were missing
-version: 0.4.0+3
+version: 0.4.0+4
 name: polymer_datepicker
 homepage: https://github.com/dam0vm3nt/polymer_datepicker
 environment:
@@ -12,7 +12,9 @@ dependencies:
 # reflectable: any
  autonotify_observe: "^1.0.0"
 
-#dependency_overrides:
+dependency_overrides:
+ autonotify_observe:
+  path: ../autonotify_observe
 #  polymer_autonotify:
 #   path: ../polymer_autonotify
 #  observe:

@@ -13,6 +13,10 @@ packages:
     description: async
     source: hosted
     version: "1.5.0"
+  autonotify_observe:
+    description: autonotify_observe
+    source: hosted
+    version: "1.0.0+5"
   barback:
     description: barback
     source: hosted
@@ -115,7 +119,7 @@ packages:
   polymer_autonotify:
     description: polymer_autonotify
     source: hosted
-    version: "1.0.0-rc.10"
+    version: "1.0.0"
   polymer_datepicker:
     description:
       path: ".."

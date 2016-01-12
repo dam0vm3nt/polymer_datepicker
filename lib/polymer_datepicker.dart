@@ -7,8 +7,7 @@ import 'dart:async';
 import 'package:polymer/polymer.dart';
 
 import "package:web_components/web_components.dart";
-import 'package:polymer_autonotify/polymer_autonotify.dart';
-import "package:observe/observe.dart";
+import 'package:autonotify_observe/autonotify_observe.dart';
 
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
