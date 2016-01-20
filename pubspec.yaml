@@ -1,26 +1,13 @@
-author: Drafintech <info@drafintech.it>
-description: The simple polymer datepicker you were missing
-version: 0.4.0+5
-name: polymer_datepicker
-homepage: https://github.com/dam0vm3nt/polymer_datepicker
-environment:
-    sdk: ">=1.8.0 <2.0.0"
-dependencies:
- intl: '>=0.12.4 <0.13.0'
- polymer_elements: "^1.0.0-rc.5"
-# web_components: '^0.12.0'
-# reflectable: any
- autonotify_observe: "^1.0.0"
-
-#dependency_overrides:
-# autonotify_observe:
-#  path: ../autonotify_observe
-#  polymer_autonotify:
-#   path: ../polymer_autonotify
-#  observe:
-#    path: ../observe
-
-
-
-transformers:
-- autonotify_observe
+author: "Drafintech <info@drafintech.it>"
+description: "The simple polymer datepicker you were missing"
+homepage: "https://github.com/dam0vm3nt/polymer_datepicker"
+name: "polymer_datepicker"
+version: "0.4.0+5"
+dependencies: 
+  autonotify_observe: "^1.0.0"
+  intl: ">=0.12.4 <0.13.0"
+  polymer_elements: "^1.0.0-rc.5"
+environment: 
+  sdk: ">=1.8.0 <2.0.0"
+transformers: 
+  - "autonotify_observe"
