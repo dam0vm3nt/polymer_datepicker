@@ -8,15 +8,15 @@ packages:
   args:
     description: args
     source: hosted
-    version: "0.13.2"
+    version: "0.13.3+1"
   async:
     description: async
     source: hosted
-    version: "1.5.0"
+    version: "1.7.0"
   autonotify_observe:
     description: autonotify_observe
     source: hosted
-    version: "1.0.0+5"
+    version: "1.0.0+7"
   barback:
     description: barback
     source: hosted
@@ -52,11 +52,11 @@ packages:
   dart_style:
     description: dart_style
     source: hosted
-    version: "0.2.2"
+    version: "0.2.4"
   glob:
     description: glob
     source: hosted
-    version: "1.0.5"
+    version: "1.1.0"
   html:
     description: html
     source: hosted
@@ -76,7 +76,7 @@ packages:
   intl:
     description: intl
     source: hosted
-    version: "0.12.5"
+    version: "0.12.6"
   logging:
     description: logging
     source: hosted
@@ -107,7 +107,7 @@ packages:
   petitparser:
     description: petitparser
     source: hosted
-    version: "1.5.0"
+    version: "1.5.1"
   plugin:
     description: plugin
     source: hosted
@@ -115,7 +115,7 @@ packages:
   polymer:
     description: polymer
     source: hosted
-    version: "1.0.0-rc.10"
+    version: "1.0.0-rc.14"
   polymer_autonotify:
     description: polymer_autonotify
     source: hosted
@@ -125,15 +125,15 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.4.0"
+    version: "0.4.0+5"
   polymer_elements:
     description: polymer_elements
     source: hosted
-    version: "1.0.0-rc.5"
+    version: "1.0.0-rc.7"
   polymer_interop:
     description: polymer_interop
     source: hosted
-    version: "1.0.0-rc.6"
+    version: "1.0.0-rc.8"
   pool:
     description: pool
     source: hosted
@@ -173,15 +173,15 @@ packages:
   stack_trace:
     description: stack_trace
     source: hosted
-    version: "1.5.0"
+    version: "1.6.0"
   string_scanner:
     description: string_scanner
     source: hosted
-    version: "0.1.4"
+    version: "0.1.4+1"
   test:
     description: test
     source: hosted
-    version: "0.12.6+2"
+    version: "0.12.7"
   utf:
     description: utf
     source: hosted
@@ -193,7 +193,7 @@ packages:
   web_components:
     description: web_components
     source: hosted
-    version: "0.12.1"
+    version: "0.12.2+1"
   when:
     description: when
     source: hosted
@@ -205,4 +205,4 @@ packages:
   yaml:
     description: yaml
     source: hosted
-    version: "2.1.7"
+    version: "2.1.8"
