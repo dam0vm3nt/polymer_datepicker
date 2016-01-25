@@ -343,7 +343,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 
 	@observable
 	@Property(notify: true)
-	bool quickChange = false;
+	bool quickChange = true;
 	@observable
 	@Property(notify: true)
 	String minYear = "1960";
@@ -512,16 +512,18 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 	@reflectable
 	void cancelClose([_, __]) {
 		_clickedIn = true;
-		_refocus = false;
+		//_refocus = false;
 	}
 
-	bool _refocus;
+	PaperInput get _input => $['input'];
+
+	//bool _refocus;
 	@reflectable
 	void inputLeft([_, __]) {
+
 		if (_clickedIn) {
-			if (!_refocus) {
-				$['input'].focus();
-				_refocus=true;
+			if (!_input.focused ) {
+				_input.focus();
 				return;
 			}
 			_clickedIn = false;
