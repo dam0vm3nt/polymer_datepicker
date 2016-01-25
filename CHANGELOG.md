@@ -1,3 +1,8 @@
+## 0.9.3
+
+Big version leap caused by the recent `jefe-ization` of the project.
+Fixed loop when selecting a date.
+
 ## 0.4.0+5
 
 Added possibility to specify a `prefix` or a `suffix` inside the datepicker :
