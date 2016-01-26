@@ -83,13 +83,6 @@
 			@apply(--polymer-datepicker-header);
 		}
 
-		.input_dateonly {
-			width: var(--datepicker-width, 6em);
-		}
-
-		.input_full {
-			width: var(--datepicker-width, 12em);
-		}
 
 		.topBar {
 			background: var(--dark-primary-color);
@@ -239,6 +232,14 @@
 		}
 
 
+		.input_dateonly {
+			width: var(--datepicker-width, 6em);
+		}
+
+		.input_full {
+			width: var(--datepicker-width, 12em);
+		}
+
 	</style>
 	<template>
 		<div class="relative">
@@ -251,7 +252,8 @@
 				             value="{{textDate}}"
 				             label="[[label]]"
 				             on-blur="inputLeft"
-				             class$="[[computeInputClass(dateonly)]]">
+				             class$="[[computeInputClass(dateonly)]]"
+							 	>
 					<content select="[prefix]"></content>
 					<content select="[suffix]"></content>
 				</paper-input>
