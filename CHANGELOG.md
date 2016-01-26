@@ -1,3 +1,7 @@
+## 0.9.4
+
+Fix width
+
 ## 0.9.3
 
 Big version leap caused by the recent `jefe-ization` of the project.
