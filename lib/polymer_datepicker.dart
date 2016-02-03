@@ -7,42 +7,29 @@ import 'dart:async';
 import 'package:polymer/polymer.dart';
 
 import "package:web_components/web_components.dart";
-import 'package:autonotify_observe/autonotify_observe.dart';
 
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
-import "dart:js" as js;
 import "dart:math" as math show min;
 
 import "package:polymer_elements/paper_input.dart";
-import "package:polymer_elements/paper_button.dart";
-import "package:polymer_elements/paper_card.dart";
-import "package:polymer_elements/paper_material.dart";
-import "package:polymer_elements/paper_toggle_button.dart";
-import "package:polymer_elements/paper_dropdown_menu.dart";
-import "package:polymer_elements/paper_dialog.dart";
-
-import "package:polymer_elements/iron_icon.dart";
 import "package:polymer_elements/iron_fit_behavior.dart";
 import "package:polymer_elements/iron_overlay_behavior.dart";
 import "package:polymer_elements/iron_resizable_behavior.dart";
-import "package:polymer_elements/iron_selector.dart";
 
-import "package:polymer_elements/iron_icons.dart";
-
-class Day extends Observable {
+class Day extends JsProxy  {
 
 	static DateFormat fmt = new DateFormat("EEE");
 
-	@observable DateTime date;
+	@reflectable DateTime date;
 
-	@observable bool selected;
+	@reflectable bool selected;
 
-	@observable bool today;
+	@reflectable bool today;
 
-	@observable bool other;
+	@reflectable bool other;
 
-	@observable String weekDay;
+	@reflectable String weekDay;
 
 	Day(DateTime d, int curMonth, DateTime selectedDate) : this.date = d
 	{
@@ -54,8 +41,8 @@ class Day extends Observable {
 	}
 }
 
-class Week extends Observable {
-	@observable List<Day> days;
+class Week extends JsProxy {
+	@reflectable List<Day> days;
 
 	Week(DateTime start, int curMonth, DateTime selectedDate) {
 		days = new List.generate(7, (int i) => new Day(
@@ -66,7 +53,7 @@ class Week extends Observable {
 @PolymerRegister("date-picker-overlay")
 class DatePickerOverlay
 	extends PolymerElement
-	with IronFitBehavior, IronResizableBehavior, IronOverlayBehavior, Observable, AutonotifyBehavior
+	with IronFitBehavior, IronResizableBehavior, IronOverlayBehavior
 {
 	DatePicker _parent;
 
@@ -78,12 +65,6 @@ class DatePickerOverlay
 	DateFormat dateFormatDayOfWeek = new DateFormat("EEEE");
 
 	DatePickerOverlay.created() : super.created() {}
-
-	@reflectable
-	showPickMonthYear ([_,__]) {
-		pickerOpen = !pickerOpen;
-	}
-
 
 	@reflectable
 	String computeDayClass(bool selected, bool today) {
@@ -104,69 +85,50 @@ class DatePickerOverlay
 	@reflectable
 	String computeDay(Day day) => day.date.day.toString();
 
-	@observable
-	@property
+	@Property(observer: 'currentDateChanged')
 	DateTime currentDate;
 
-	@observable
 	@property
 	List<Week> month;
 
-	@observable
 	@property
 	Week firstWeek;
 
-	@observable
 	@property
 	String monthDisplay;
 
-	@observable
 	@property
 	String monthShortDisplay;
 
-	@observable
 	@property
 	String yearDisplay;
 
-	@observable
 	@property
 	String yearSelectedDisplay;
 
-	@observable
 	@property
 	String dayDisplay;
 
-	@observable
 	@property
 	String dayOfWeekDisplay;
 
-	@observable
 	@property
 	List<String> monthList;
 
-	@observable
 	@property
 	List<int> yearList;
 
-	@observable
-	@property
+	@Property(observer: 'updateDate')
 	int monthListSelected;
 
-	@observable
-	@property
+	@Property(observer: 'updateDate')
 	int yearListSelected;
 
-	@observable
-	@property
-	bool quickChange = false;
+	@Property(notify: true, reflectToAttribute: true)
+	bool quickChange;
 
-	@observable
 	@property
 	bool startWithSunday = false;
-
-	@observable
-	@property
-	bool pickerOpen = false;
 
 
 	void _updateMonth() {
@@ -177,21 +139,20 @@ class DatePickerOverlay
 		while (first.weekday != (startWithSunday ? DateTime.SUNDAY : DateTime.MONDAY)) {
 			first = first.subtract(new Duration(days: 1));
 		}
-		month = new List.generate(6,
+		set('month', new List.generate(6,
 			(int w) => new Week(first.add(new Duration(days: 7 * w)),
 			currentDate.month,
 			_parent.selectedDate),
 			growable: true
-		);
+		));
 
 		while(month.last.days[0].other) {
-			month.removeLast();
+			removeItem('month', month.last);
 		}
-		firstWeek = month.first;
+		set('firstWeek', month.first);
 	}
 
 	@reflectable
-	@Observe("monthListSelected,yearListSelected")
 	updateDate([_, __]) {
 
 		if (null == _ || null == __)
@@ -208,20 +169,19 @@ class DatePickerOverlay
 			setYear = _year;
 
 		if (currentDate.year != setYear || currentDate.month != setMonth)
-			currentDate = new DateTime(setYear, setMonth, currentDate.day);
+			set('currentDate', new DateTime(setYear, setMonth, currentDate.day));
 	}
 
 	@reflectable
-	@Observe("currentDate")
 	void currentDateChanged([_, __]) {
-		monthDisplay = currentDate != null ? dateFormatMonth.format(currentDate) : "...";
-		yearDisplay = currentDate != null ? dateFormatYear.format(currentDate) : "...";
+		set('monthDisplay', currentDate != null ? dateFormatMonth.format(currentDate) : "...");
+		set('yearDisplay', currentDate != null ? dateFormatYear.format(currentDate) : "...");
 
 		if (yearListSelected == null || (yearList.length > 0 && yearList[yearListSelected] != currentDate.year))
-			yearListSelected = yearList.indexOf(currentDate.year);
+			set('yearListSelected', yearList.indexOf(currentDate.year));
 
-		if (monthListSelected != currentDate.month - 1)
-			monthListSelected = currentDate.month - 1;
+		if (monthList != null && monthListSelected != currentDate.month - 1)
+			set('monthListSelected', currentDate.month - 1);
 
 		_updateMonth();
 	}
@@ -229,32 +189,32 @@ class DatePickerOverlay
 
 	@reflectable
 	void nextMonth([_, __]) {
-		if (!(currentDate.month == 12 &&
-			currentDate.year + 1 > int.parse(_parent.maxYear))) {
-			currentDate = currentDate.subtract(new Duration(days: currentDate.day - 1));
-			currentDate = currentDate.add(new Duration(days: 32));
-			currentDate = currentDate.subtract(new Duration(days: currentDate.day - 1));
+		if (!(currentDate.month == 12 && currentDate.year + 1 > int.parse(_parent.maxYear))) {
+			var cD = currentDate.subtract(new Duration(days: currentDate.day - 1));
+			cD = cD.add(new Duration(days: 32));
+			cD = cD.subtract(new Duration(days: cD.day - 1));
+			set('currentDate', cD);
 		}
 	}
 
 	@reflectable
 	void prevMonth([_, __]) {
-		if (!(currentDate.month == 1 &&
-			currentDate.year - 1 < int.parse(_parent.minYear))) {
-			currentDate = currentDate.subtract(new Duration(days: currentDate.day));
-			currentDate = currentDate.subtract(new Duration(days: currentDate.day - 1));
+		if (!(currentDate.month == 1 && currentDate.year - 1 < int.parse(_parent.minYear))) {
+
+			var cD = currentDate.subtract(new Duration(days: currentDate.day));
+			cD = cD.subtract(new Duration(days: cD.day - 1));
+			set('currentDate', cD);
 		}
 	}
 
 	@reflectable
 	void selDate(Event evt, var detail) {
-		_parent.pickerOpen = false;
-		//fire("change");
+		_parent.set('pickerOpen', false);
 
 		DomRepeatModel mdl = new DomRepeatModel.fromEvent(convertToJs(evt));
 
 		Day day = mdl["day"];
-		_parent.selectedDate = day.date;
+		_parent.set('selectedDate', day.date);
 
 	}
 
@@ -284,75 +244,99 @@ const EventStreamProvider<CustomEvent> _selectDateEvent = const EventStreamProvi
 ///         dateonly="true">
 ///     </date-picker>
 ///
-class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
+class DatePicker extends PolymerElement {
 
-	@observable
+	DatePicker.created() : super.created() {
+		_format = new DateFormat.yMd();
+
+		if (!dateOnly)
+			_format.add_Hm();
+
+		if (selectedDate != null)
+			set('textDate', _format.format(selectedDate));
+
+	}
+
+	@override
+	void attached() {
+		super.attached();
+		_overlay = ($['pick'] as DatePickerOverlay).._parent = this;
+
+		var tMonth = [];
+		for (int x = 1; x < 13; x++)
+			tMonth.add(_overlay.dateFormatMonth.format(new DateTime(0, x)));
+
+		computeYears();
+		_overlay
+			..set('monthList', tMonth)
+			..set('currentDate', new DateTime.now());
+
+		_updateOverlayDate();
+	}
+
+	@override
+	void detached() {
+		super.detached();
+		set('pickerOpen', false);
+	}
+
+	Logger _logger = new Logger("polymer_datepicker");
+	DatePickerOverlay _overlay;
+	DateFormat _format = new DateFormat.yMd();
+	bool _comingFromTextChange = false;
+	bool _clickedIn = false;
+	PaperInput get _input => $['input'];
+
 	@property
+	bool pickerOpen = false;
+
+	@Property(notify: true, reflectToAttribute: true)
 	bool startWithSunday = false;
 
-	DatePickerOverlay _overlay;
 	/// A flag for field validation
-	@observable
-	@property
+	@Property(notify: true, reflectToAttribute: true, observer: 'updateRequired')
 	bool required = false;
 
 	/// A flag to enable / disable this field
-	@observable
-	@property
+	@Property(notify: true, reflectToAttribute: true)
 	bool disabled = false;
 
-	/// Current selected date, bindable r/w, notify.
-	@observable
-	@Property(notify: true)
-	DateTime selectedDate;
-
 	/// Label displayed in the field
-	@observable
-	@property
+	@Property(notify: true, reflectToAttribute: true)
 	String label;
 
+	@Property(notify: true, reflectToAttribute: true)
+	bool quickChange = false;
+
+	/// Current selected date, bindable r/w, notify.
+	@Property(notify: true, reflectToAttribute: true, observer: 'selectedDateChanged')
+	DateTime selectedDate;
+
 	/// A flag to select only date without time info (default: false)
-	@observable
-	@property
+	@Property(notify: true, reflectToAttribute: true, observer: 'changeDateFormat')
 	bool dateOnly = false;
 
-	@observable
-	@property
-	@deprecated
-	bool dateonly = false;
+	/// The date format (default: locale for `DateFormat.yMd`)
+	@Property(notify: true, reflectToAttribute: true, observer: 'changeDateFormat')
+	String dateFormat = new DateFormat.yMd().pattern;
 
-	DateFormat format = new DateFormat.yMd();
+	@Property(notify: true, reflectToAttribute: true, observer: 'computeYears')
+	String minYear = "1960";
+
+	@Property(notify: true, reflectToAttribute: true, observer: 'computeYears')
+	String maxYear = "2020";
 
 	/// Text version of the date bindable, r/w
-	@observable
-	@property
+	@Property(notify: true, reflectToAttribute: true, observer: 'textDateChanged')
 	String textDate;
 
-	@Observe("required")
-	void updateRequired(_) {
+	@reflectable
+	void updateRequired([_, __]) {
 		_logger.fine("req date $required");
 		($["input"] as PaperInput).validate();
 	}
 
-	Logger _logger = new Logger("polymer_datepicker");
-
-	/// The date format (default: locale for `DateFormat.yMd`)
-	@observable
-	@property
-	String dateFormat = new DateFormat.yMd().pattern;
-
-	@observable
-	@Property(notify: true)
-	bool quickChange = true;
-	@observable
-	@Property(notify: true)
-	String minYear = "1960";
-	@observable
-	@Property(notify: true)
-	String maxYear = "2020";
-
 	@reflectable
-	@Observe("minYear,maxYear")
 	computeYears([_, __]) {
 		if (_overlay != null) {
 			var t = [],
@@ -360,93 +344,23 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 				minY = int.parse(minYear);
 			for (; maxY >= minY; maxY--)
 				t.add(maxY);
-			_overlay.yearList = t;
+			_overlay.set('yearList', t);
 		}
-	}
-
-	DatePicker.created() : super.created() {
-		format = new DateFormat.yMd();
-
-		if (!dateOnly && !dateonly) {
-			format.add_Hm();
-		}
-		if (selectedDate != null) {
-			textDate = format.format(selectedDate);
-		}
-	}
-
-	@Observe("dateOnly,dateonly,dateFormat")
-	void changeDateFormat([_, __, ___]) {
-		format = new DateFormat(dateFormat);
-		if (!dateOnly && !dateonly) {
-			format.add_Hm();
-		}
-		if (selectedDate != null) {
-			textDate = format.format(selectedDate);
-		}
-	}
-
-	@observable
-	@property
-	bool pickerOpen = false;
-
-	@override
-	void attached() {
-		super.attached();
-		_overlay = ($['pick'] as DatePickerOverlay)
-			.._parent = this
-			..currentDate = new DateTime.now();
-		//..currentDateChanged();
-
-		var tMonth = [];
-		for (int x = 1; x < 13; x++)
-			tMonth.add(_overlay.dateFormatMonth.format(new DateTime(0, x)));
-
-		_overlay.monthList = tMonth;
-		computeYears();
-
-		_updateOverlayDate();
 	}
 
 	@reflectable
-	void doPos(Event e, var detail) {
-
-		DatePickerOverlay ov = $['pick'] as DatePickerOverlay;
-
-		// Ok : let's position the damn thing.
-		Rectangle r = ov.parent.getBoundingClientRect();
-		var left = r.left;
-		var top = r.top;
-
-		num h = window.innerHeight;
-
-		num oh = ov.scrollHeight;
-
-		top = math.min(h-oh,top);
-
-		num w = window.innerWidth;
-		num ow = ov.scrollWidth;
-
-		left = math.min(w-ow,left);
-
-		ov.style.position = "fixed";
-		ov.style.left = "${left}px";
-		ov.style.top = "${top}px";
-
-	}
-
-	void _updateOverlayDate (){
-		if (_overlay != null) {
-			var n = selectedDate != null ? selectedDate : new DateTime.now();
-			_overlay.dayOfWeekDisplay = _overlay.dateFormatDayOfWeek.format(n);
-			_overlay.monthShortDisplay = _overlay.dateFormatMonthShort.format(n);
-			_overlay.dayDisplay = "${n.day}";
-			_overlay.yearSelectedDisplay = _overlay.dateFormatYear.format(n);
+	void changeDateFormat([_, __]) {
+		_format = new DateFormat(dateFormat);
+		if (!dateOnly) {
+			_format.add_Hm();
+		}
+		if (selectedDate != null) {
+			set('textDate', _format.format(selectedDate));
 		}
 	}
 
-	@Observe("selectedDate")
-	void selectedDateChanged([_]) {
+	@reflectable
+	void selectedDateChanged([_,__]) {
 		debounce("selected_date_changed",(){
 			_logger.fine("Date changed : ${selectedDate}");
 
@@ -454,7 +368,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 
 			String newText;
 			if (selectedDate != null) {
-				newText = format.format(selectedDate);
+				newText = _format.format(selectedDate);
 			} else {
 				newText = null;
 			}
@@ -463,7 +377,7 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 				_comingFromTextChange = false;
 				return;
 			}
-			textDate = newText;
+			set('textDate', newText);
 			_logger.fine("Selected Date is ${selectedDate}");
 			fire("selectdate");
 			fire("select-date-changed");
@@ -471,21 +385,19 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 		});
 	}
 
-	bool _comingFromTextChange = false;
-
-	@Observe("textDate")
-	void textDateChanged([_]) {
+	@reflectable
+	void textDateChanged([_,__]) {
 		_logger.fine("Text changed : ${textDate}");
 		try {
-			DateTime newDate = format.parse(textDate);
+			DateTime newDate = _format.parse(textDate);
 			if (newDate == selectedDate) {
 				return;
 			}
 			_comingFromTextChange = true;
-			selectedDate = newDate;
+			set('selectedDate', newDate);
 
 			if (pickerOpen) {
-				_overlay.currentDate = selectedDate;
+				_overlay.set('currentDate', selectedDate);
 			}
 		} catch (e) {
 			_logger.fine("Invalid date :${textDate} : ${e}");
@@ -501,21 +413,16 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 			return;
 		}
 		if (selectedDate != null) {
-			_overlay.currentDate = selectedDate;
+			_overlay.set('currentDate', selectedDate);
 		}
 		_overlay._updateMonth();
-		pickerOpen = true;
+		set('pickerOpen', true);
 	}
-
-	bool _clickedIn = false;
 
 	@reflectable
 	void cancelClose([_, __]) {
 		_clickedIn = true;
-		//_refocus = false;
 	}
-
-	PaperInput get _input => $['input'];
 
 	//bool _refocus;
 	@reflectable
@@ -531,24 +438,55 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 			return;
 		}
 		print("CLOSING");
-		pickerOpen = false;
+		set('pickerOpen', false);
 
 		if (textDate == null || textDate.isEmpty) {
-			selectedDate = null;
+			set('selectedDate', null);
 		}
 		return;
 	}
 
-	@override
-	void detached() {
-		super.detached();
-		pickerOpen = false;
+	@reflectable
+	void doPos(Event e, var detail) {
+
+		DatePickerOverlay ov = $['pick'] as DatePickerOverlay;
+		// Ok : let's position the damn thing.
+		Rectangle r = ov.parent.getBoundingClientRect();
+
+		var left = r.left;
+		var top = r.top;
+
+		num h = window.innerHeight;
+
+		num oh = _overlay.scrollHeight;
+
+		top = math.min(h-oh,top);
+
+		num w = window.innerWidth;
+		num ow = _overlay.scrollWidth;
+
+		left = math.min(w-ow,left);
+
+		_overlay.style.position = "fixed";
+		_overlay.style.left = "${left}px";
+		_overlay.style.top = "${top}px";
+
 	}
 
 	@reflectable
-	String computeInputClass(bool dateonly) =>
-		dateonly ? 'input_dateonly to-validate' : 'input_full to-validate';
+	String computeInputClass(bool dateonly) => dateonly ? 'input_dateonly to-validate' : 'input_full to-validate';
 
+	void _updateOverlayDate (){
+		if (_overlay != null) {
+			var n = selectedDate != null ? selectedDate : new DateTime.now();
+			_overlay
+				..set('dayOfWeekDisplay', _overlay.dateFormatDayOfWeek.format(n))
+				..set('monthShortDisplay', _overlay.dateFormatMonthShort.format(n))
+				..set('dayDisplay', "${n.day}")
+				..set('yearSelectedDisplay', _overlay.dateFormatYear.format(n))
+			;
+		}
+	}
 
 	Stream<CustomEvent> get onSelectDate => _selectDateEvent.forTarget(this);
 }

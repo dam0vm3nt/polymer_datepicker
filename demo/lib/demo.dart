@@ -3,7 +3,6 @@ library polymer_autonotify.demo;
 
 import "package:polymer/polymer.dart";
 import "package:web_components/web_components.dart" show HtmlImport;
-import "package:autonotify_observe/autonotify_observe.dart";
 
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_input.dart";
@@ -15,9 +14,9 @@ import "package:polymer_datepicker/polymer_datepicker.dart";
 import "dart:html";
 
 @PolymerRegister("test-polymer-datepicker")
-class TestPolymerAutonotify extends PolymerElement with AutonotifyBehavior, Observable {
+class TestPolymerAutonotify extends PolymerElement {
  
- @observable @property DateTime myDate;
+ @property DateTime myDate;
  
 
 
