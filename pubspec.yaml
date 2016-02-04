@@ -2,7 +2,7 @@ author: "Drafintech <info@drafintech.it>"
 description: "The simple polymer datepicker you were missing"
 homepage: "https://github.com/dam0vm3nt/polymer_datepicker"
 name: "polymer_datepicker"
-version: "0.9.4"
+version: "0.9.5"
 dependencies: 
   autonotify_observe: "^1.0.0"
   intl: ">=0.12.4 <0.13.0"
