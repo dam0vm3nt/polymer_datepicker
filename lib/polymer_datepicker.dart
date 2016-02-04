@@ -306,7 +306,7 @@ class DatePicker extends PolymerElement {
 	String label;
 
 	@Property(notify: true, reflectToAttribute: true)
-	bool quickChange = false;
+	bool quickChange = true;
 
 	/// Current selected date, bindable r/w, notify.
 	@Property(notify: true, reflectToAttribute: true, observer: 'selectedDateChanged')
