@@ -3,10 +3,9 @@ description: "The simple polymer datepicker you were missing"
 homepage: "https://github.com/dam0vm3nt/polymer_datepicker"
 name: "polymer_datepicker"
 version: "0.10.0"
-dependencies:
+dependencies: 
   intl: ">=0.12.4 <0.13.0"
-  polymer_elements: "^1.0.0-rc.5"
   polymer: "^1.0.0-rc.15"
+  polymer_elements: "^1.0.0-rc.5"
 environment: 
   sdk: ">=1.8.0 <2.0.0"
-
