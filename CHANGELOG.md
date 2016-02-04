@@ -1,3 +1,7 @@
+## 0.10.0
+
+fixed styles by @barfittc.
+
 ## 0.9.4
 
 Fix width
