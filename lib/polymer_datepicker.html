@@ -1,15 +1,35 @@
+
+<link rel="import" href="../../packages/polymer_elements/iron_selector.html">
+<link rel="import" href="../../packages/polymer_elements/iron_icons.html">
+<link rel="import" href="../../packages/polymer_elements/iron_icon.html">
+<link rel="import" href="../../packages/polymer_elements/iron_flex_layout.html">
+
+<link rel="import" href="../../packages/polymer_elements/paper_input.html">
+<link rel="import" href="../../packages/polymer_elements/paper_button.html">
+<link rel="import" href="../../packages/polymer_elements/paper_card.html">
+<link rel="import" href="../../packages/polymer_elements/paper_material.html">
+<link rel="import" href="../../packages/polymer_elements/paper_toggle_button.html">
+<link rel="import" href="../../packages/polymer_elements/paper_dropdown_menu.html">
+<link rel="import" href="../../packages/polymer_elements/paper_listbox.html">
+<link rel="import" href="../../packages/polymer_elements/paper_item.html">
+<link rel="import" href="../../packages/polymer_elements/paper_dialog.html">
+
+
 <dom-module id="date-picker-overlay">
 	<style>
 		:host {
-			display: inline-block;
+			display: block;
 			font-family: RobotoDraft, Roboto, sans-serif;
 			color: var(--primary-text-color);
+			--paper-input-container-label: {
+				color: var(--text-primary-color);
+
+			};
 
 		}
 
 		.daySelected {
 
-			margin-top: -5px;
 			outline: none;
 			-moz-user-select: none;
 			-ms-user-select: none;
@@ -42,10 +62,10 @@
 
 		.cell {
 			text-align: center;
-			max-width: 25px;
-			max-height: 25px;
-			width: 25px;
-			height: 25px;
+			max-width: 15px;
+			max-height: 15px;
+			width: 15px;
+			height: 15px;
 			padding: 6px;
 			@apply(--polymer-datepicker-cell);
 		}
@@ -90,6 +110,8 @@
 			padding: 0.5em;
 			font-size: 0.75em;
 			font-weight: bold;
+			text-align: center;
+
 			@apply(--layout-center-center);
 			@apply(--polymer-datepicker-top-bar);
 		}
@@ -98,6 +120,7 @@
 			background: var(--default-primary-color);
 			color: var(--text-primary-color);
 			font-size: 1.15em;
+			text-align: center;
 			@apply(--layout-center-center);
 			@apply(--polymer-datepicker-middle-bar);
 		}
@@ -114,13 +137,6 @@
 
 		.middleBar .upper {
 			text-transform: uppercase;
-		}
-		.flex {
-			@apply(--layout-flex);
-		}
-
-		.flex-horizontal {
-			@apply(--layout-horizontal);
 		}
 
 		iron-selector > * {
@@ -141,82 +157,136 @@
 			background: var(--light-primary-color);
 			color: var(--primary-text-color);
 		}
-		.flex-end-justified {
-			padding-top: 8px;
+
+		.flex-horizontal {
 			@apply(--layout-horizontal);
-			@apply(--layout-end-justified);
+		}
+
+		.flexchild {
+			text-align: center;
+			@apply(--layout-flex);
+		}
+		.flex-center-align, .cell div {
+			@apply(--layout-self-center);
+		}
+		.flex-center-justified {
+			@apply(--layout-center-justified);
+		}
+		.monthChangeButton {
+			margin:0;padding:0;width:30px;height:30px;
+		}
+
+		.dropdown-content {
+			color: var(--primary-text-color);
 		}
 
 
+		paper-dropdown-menu * {
+			overflow-x: hidden;
+		}
 
+		  paper-dropdown-menu paper-item {
+			  color: var(--primary-text-color);
+			  margin-right: 15px;
+		  }
+		paper-dropdown-menu paper-item.iron-selected {
+			color: var(--text-primary-color);
+			margin-right:0;
+		}
+		paper-dropdown-menu paper-item.iron-selected:hover {
+			background-color: var(--dark-primary-color);
+		}
+		paper-dropdown-menu paper-item:hover {
+			background-color: var(--divider-color);
+			margin-right:0;
+		}
+		paper-dropdown-menu.monthList {
+			--paper-input-container-input: {
+				color: var(--text-primary-color);
+				text-align: center;
+				width: 100px;
+				text-transform: uppercase;
+			};
+		}
+		paper-dropdown-menu.yearList {
+			--paper-input-container-input: {
+				color: var(--text-primary-color);
+				text-align: center;
+				width: 40px;
+				text-transform: uppercase;
+			};
+		}
+		.monthList, .yearList {
+			margin-top: -15px;
+		}
 	</style>
 	<template>
 		<paper-card>
-			<div class="topBar layout horizontal">[[dayOfWeekDisplay]]</div>
-			<div class="card-content vertical layout middleBar">
-				<div class="upper">[[monthShortDisplay]]</div>
-				<div class="big">[[dayDisplay]]</div>
-				<div class="light">[[yearSelectedDisplay]]</div>
-			</div>
-			<div class="card-content" hidden="[[!pickerOpen]]" style="width:259px;">
-				<div class="container flex-horizontal">
-					<div class="horizontal-section flex">
-						<iron-selector id="months" selected="{{monthListSelected}}">
-							<template is="dom-repeat" items="[[monthList]]" as="month">
-								<div>[[month]]</div>
+
+			<div class="topBar layout horizontal">[[dayOfWeekDisplay]]
+				[[quickChange]]</div>
+			<div class="card-content layout middleBar">
+
+					<div class="flex-horizontal">
+						<paper-icon-button class="flex-center-align monthChangeButton" on-click="prevMonth" icon="arrow-back"></paper-icon-button>
+						<div class="flexchild">
+
+							<template is="dom-if" if="[[!quickChange]]">
+								<div class="upper">[[monthShortDisplay]]</div>
+								<div class="big">[[dayDisplay]]</div>
+								<div class="light">[[yearSelectedDisplay]]</div>
 							</template>
-						</iron-selector>
-					</div>
-					<div id="years" class="horizontal-section" style="width:75px;">
-						<iron-selector selected="{{yearListSelected}}">
-							<template is="dom-repeat" items="[[yearList]]" as="year">
-								<div>[[year]]</div>
+
+							<template is="dom-if" if="[[quickChange]]">
+								<paper-dropdown-menu class="monthList" no-label-float>
+									<paper-listbox class="dropdown-content" selected="{{monthListSelected}}">
+										<template is="dom-repeat" items="[[monthList]]" as="month">
+											<paper-item value="[[index]]">[[month]]</paper-item>
+										</template>
+									</paper-listbox>
+								</paper-dropdown-menu>
+
+								<div class="big">[[dayDisplay]]</div>
+
+								<paper-dropdown-menu class="yearList" no-label-float>
+									<paper-listbox class="dropdown-content" selected="{{yearListSelected}}">
+										<template is="dom-repeat" items="[[yearList]]" as="year">
+											<paper-item value="[[index]]">[[year]]</paper-item>
+										</template>
+									</paper-listbox>
+								</paper-dropdown-menu>
+
 							</template>
-						</iron-selector>
+
+						</div>
+						<paper-icon-button class="flex-center-align monthChangeButton" on-click="nextMonth" icon="arrow-forward"></paper-icon-button>
 					</div>
-				</div>
-				<div class="buttons flex-end-justified">
-					<paper-button on-click="showPickMonthYear" autofocus>OK</paper-button>
-				</div>
 			</div>
-			<div id="month" class="card-content vertical layout monthCell" hidden="[[pickerOpen]]">
-				<div class="horizontal layout justified center" id="header">
-					<paper-button style="min-width:0px" on-click="prevMonth">
-						<iron-icon icon="arrow-back" style="width:20px;height:20px"></iron-icon>
-					</paper-button>
-					<div>
-						<template is="dom-if" if="[[!quickChange]]">
-							<div class="monthYear">[[monthDisplay]] [[yearDisplay]]</div>
-						</template>
-						<template is="dom-if" if="[[quickChange]]">
-							<paper-button on-click="showPickMonthYear" >[[monthDisplay]] [[yearDisplay]]</paper-button>
-						</template>
-					</div>
-					<paper-button style="min-width:0px" on-click="nextMonth">
-						<iron-icon icon="arrow-forward" style="width:20px;height:20px"></iron-icon>
-					</paper-button>
-				</div>
-				<div class="horizontal layout">
+
+			<div class="card-content vertical layout monthCell">
+
+				<div class="flex-horizontal">
 					<template is="dom-repeat" items="[[firstWeek.days]]" as="day">
-						<div class="cell titleCell layout center">{{day.weekDay}}</div>
+						<div class="flex-horizontal cell titleCell"><div class="flex-center-align">{{day.weekDay}}</div></div>
 					</template>
 				</div>
+
 				<template is="dom-repeat" items="[[month]]" as="week">
-					<div class="horizontal layout">
+					<div class="flex-horizontal">
 						<template is="dom-repeat" items="[[week.days]]" as="day">
 							<template is="dom-if" if="[[!day.other]]">
-								<div class$="cell relative [[computeDayClass(day.selected,day.today)]]"
-								     on-click="selDate">
-									<span>[[computeDay(day)]]</span>
+								<div on-click="selDate" class$="flex-center-justified flex-horizontal cell [[computeDayClass(day.selected,day.today)]]">
+									<div class="flex-center-align">[[computeDay(day)]]</div>
 								</div>
 							</template>
 							<template is="dom-if" if="[[day.other]]">
-								<div class="cell relative"></div>
+								<div class="cell"></div>
 							</template>
 						</template>
 					</div>
 				</template>
 			</div>
+
 		</paper-card>
 	</template>
 </dom-module>
