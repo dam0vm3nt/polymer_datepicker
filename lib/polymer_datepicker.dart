@@ -16,6 +16,10 @@ import "package:polymer_elements/paper_input.dart";
 import "package:polymer_elements/iron_fit_behavior.dart";
 import "package:polymer_elements/iron_overlay_behavior.dart";
 import "package:polymer_elements/iron_resizable_behavior.dart";
+import "package:polymer_elements/paper_card.dart";
+import "package:polymer_elements/paper_icon_button.dart";
+import "package:polymer_elements/paper_dropdown_menu.dart";
+import "package:polymer_elements/paper_listbox.dart";
 
 class Day extends JsProxy  {
 
@@ -125,7 +129,7 @@ class DatePickerOverlay
 	int yearListSelected;
 
 	@Property(notify: true, reflectToAttribute: true)
-	bool quickChange;
+	bool disableQuickChange;
 
 	@property
 	bool startWithSunday = false;
@@ -306,7 +310,7 @@ class DatePicker extends PolymerElement {
 	String label;
 
 	@Property(notify: true, reflectToAttribute: true)
-	bool quickChange = true;
+	bool disableQuickChange = false;
 
 	/// Current selected date, bindable r/w, notify.
 	@Property(notify: true, reflectToAttribute: true, observer: 'selectedDateChanged')
