@@ -4,20 +4,19 @@ version: 0.0.1
 author: Vittorio Ballestra <vittorio.ballestra@drafintech.it>
 homepage: https://github.com/dam0vm3nt/polymer_autonotify
 environment:
-  sdk: '>=1.0.0 <2.0.0'
+  sdk: '>=1.13.0 <2.0.0'
 dependencies:
- polymer_elements: "^1.0.0-rc.5"
- web_components: '^0.12.0'
- autonotify_observe: '^1.0.0'
- polymer_datepicker:
-  path: ..
- intl: any
-
-#dependency_overrides:
-# autonotify_observe:
-#   path: ../../autonotify_observe
+  polymer: "^1.0.0-rc.15"
+  polymer_datepicker:
+    path: ..
 
 transformers:
-- autonotify_observe:
+- polymer:
     entry_points:
     - web/index.html
+- $dart2js:
+    $include: '**/*.bootstrap.initialize.dart'
+    minify: false
+    commandLineOptions:
+    - --trust-type-annotations
+    - --trust-primitives
