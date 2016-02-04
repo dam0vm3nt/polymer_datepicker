@@ -552,3 +552,4 @@ class DatePicker extends PolymerElement with Observable, AutonotifyBehavior {
 
 	Stream<CustomEvent> get onSelectDate => _selectDateEvent.forTarget(this);
 }
+
