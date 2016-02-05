@@ -1,8 +1,10 @@
-author: "Drafintech <info@drafintech.it>"
+authors: 
+ - "Drafintech <info@drafintech.it>"
+ - "Chris Barfitt <barfittc@gmail.com>"
 description: "The simple polymer datepicker you were missing"
 homepage: "https://github.com/dam0vm3nt/polymer_datepicker"
 name: "polymer_datepicker"
-version: "0.10.0"
+version: "0.10.0+1"
 dependencies: 
   intl: ">=0.12.4 <0.13.0"
   polymer: "^1.0.0-rc.15"
